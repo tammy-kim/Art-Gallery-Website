@@ -1,5 +1,5 @@
 <?php
 	error_reporting(-1);
 	ini_set('display_errors',1);
-	include("test_db.php");
+	include("art_owner.php");
 ?>
