@@ -2,9 +2,9 @@ drop table ArtOwner;
 
 CREATE TABLE ArtOwner(
                 OwnerID integer PRIMARY KEY,
-                FirstName char(50),
-                LastName char(50),
-                Email char(50),
+                FirstName VARCHAR2(50),
+                LastName VARCHAR2(50),
+                Email VARCHAR2(50),
                 UNIQUE (Email)
             );
 
