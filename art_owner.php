@@ -45,10 +45,10 @@
              * @package Oracle
              */
             
-            //require('ac_db.inc.php');
-            require('init.php');
+            require('ac_db.inc.php');
+            //require('init.php');
             // this sets up a connection to the oracle database. The names don't really matter
-            $db = new \Oracle\Db("test_db", "Mine");
+            //$db = new \Oracle\Db("test_db", "Mine");
             
             function handleDisplayRequest(){
                 $db = new \Oracle\Db("test_db", "Mine");
@@ -109,7 +109,7 @@
                 // $alltuples = array (
                 //     $tuple
                 // );
-                $sql = "INSERT INTO ArtOwner values (1, $fn, $ln, $em)";
+                $sql = "INSERT INTO ArtOwner values (10, $fn, $ln, $em)";
                 //$sql = "INSERT INTO ArtOwner values (5, 'abc', 'def', 'gmail')";
                 $db->execute($sql, "inserting new owner");
                 //OCICommit($db_conn);
