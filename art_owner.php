@@ -188,14 +188,12 @@
                 $fn = $_POST['insFN'];
                 $ln = $_POST['insLN'];
                 $em = $_POST['insemail'];
-                echo$fn;
 
-    
                 // $alltuples = array (
                 //     $tuple
                 // );
-                //$sql = "INSERT INTO ArtOwner values (40, $fn, $ln, $em)";
-                $sql = "INSERT INTO ArtOwner values (10000, 'abc', 'def', 'asdfasdf')";
+                $sql = "INSERT INTO ArtOwner values (40, '" . $fn . "', '" . $ln . "', '" . $em . "')";
+                //$sql = "INSERT INTO ArtOwner values (5, 'abcf', 'deff', 'asdfasdff')";
                 executePlainSQL($sql);
                 OCICommit($db_conn);
             }
