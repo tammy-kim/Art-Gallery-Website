@@ -226,13 +226,29 @@
                 executeBoundSQL("insert into ArtOwner values ($ownerid, :bind1, :bind2, :bind3)", $alltuples);
                 OCICommit($db_conn);
             }
-
+            function handleOwnerUpdateRequest(){
+                global $db_conn;
+                $old = $_POST['insOldEmail'];
+                $new = $_POST['insNewEmail'];
+                executePlainSQL("UPDATE ArtOwner SET Email='" . $new . "' WHERE Email='" . $old . "'");
+                OCICommit($db_conn);
+            }
+            function handleOwnerDeleteRequest(){
+                global $db_conn;
+                $email = $_POST['delEmail'];
+                executePlainSQL("DELETE FROM ArtOwner WHERE Email='" . $email . "'");
+                OCICommit($db_conn);
+            }
             function handlePOSTRequest() {
                 if (connectToDB()){
                     if (array_key_exists('resetTablesRequest', $_POST)) {
                        handleResetRequest();
                     } else if (array_key_exists('insertQueryRequest', $_POST)) {
                         handleOwnerInsertRequest();
+                    } else if (array_key_exists('updateOwnerQueryRequest', $_POST)) {
+                        handleOwnerUpdateRequest();
+                    } else if (array_key_exists('deleteOwnerRequest', $_POST)) {
+                        handleOwnerDeleteRequest();
                     }
                 }
 
@@ -255,10 +271,10 @@
                 disconnectFromDB();
             }
 
-            if (isset($_POST['reset']) || isset($_POST['insertSubmit'])) {
+            if (isset($_POST['reset']) || isset($_POST['insertSubmit'])|| isset($_POST['insertNewEmail'])|| isset($_POST['deleteOwner'])) {
                 
                 handlePOSTRequest();
-            } else if (isset($_GET['display']) || isset($_GET['displayTupleRequest'])) {
+            } else if (isset($_GET['display']) ) {
                 //echo"1";
                 handleGETRequest();
             }

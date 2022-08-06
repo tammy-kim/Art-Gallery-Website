@@ -7,19 +7,6 @@
     
         <body>
 
-            <h2>Reset</h2>
-            <p>If you wish to reset the table press on the reset button.</p>
-
-            <form method="POST" action="index.php">
-                <!-- if you want another page to load after the button is clicked, you have to specify that page in the action parameter -->
-                <input type="hidden" id="resetTablesRequest" name="resetTablesRequest">
-                <p><input type="submit" value="Reset" name="reset"></p>
-            </form>
-
-            <h2>Display the Tuples in DemoTable</h2>
-        <form method="GET" action="index.php"> <!--refresh page when submitted-->
-        <input type="hidden" id="displayTupleRequest" name="displayTupleRequest">
-        <input type="submit" name="displayTuples"></p>
 
             <h2>Display Art Owners</h2>
             <form method="GET" action="index.php">
@@ -36,6 +23,23 @@
                 Email: <input type="text" name="insemail"> <br /><br />
 
                 <input type="submit" value="Insert" name="insertSubmit"></p>
+            </form>
+
+            <h2>Art Owner Update Email</h2>
+            <form method="POST" action="index.php"> <!--refresh page when submitted-->
+                <input type="hidden" id="updateOwnerQueryRequest" name="updateOwnerQueryRequest">
+                Old email: <input type="text" name="insOldEmail"> <br /><br />
+                New email: <input type="text" name="insNewEmail"> <br /><br />
+
+                <input type="submit" value="Update" name="insertNewEmail"></p>
+            </form>
+
+            <h2>Art Owner Delete Account</h2>
+            <form method="POST" action="index.php"> <!--refresh page when submitted-->
+                <input type="hidden" id="deleteOwnerRequest" name="deleteOwnerRequest">
+                Email: <input type="text" name="delEmail"> <br /><br />
+
+                <input type="submit" value="Delete Myself" name="deleteOwner"></p>
             </form>
             <?php
                 require_once('art_owner.php');
