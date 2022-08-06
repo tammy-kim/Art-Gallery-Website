@@ -172,26 +172,26 @@
             }
 
             function handleResetRequest() {
-                global $db_conn;
-                //$db = new \Oracle\Db("initialize", "Mine");
-                // Drop old table
-                $dropsql = "DROP TABLE ArtOwner";
-                executePlainSQL($dropsql);
+                // global $db_conn;
+                // //$db = new \Oracle\Db("initialize", "Mine");
+                // // Drop old table
+                // $dropsql = "DROP TABLE ArtOwner";
+                // executePlainSQL($dropsql);
     
-                // Create new table
-                echo "<br> resetting art owner table <br>";
-                //$sql = file_get_contents('initialize.sql');
-                $sql = "CREATE TABLE ArtOwner(
-                    OwnerID integer PRIMARY KEY,
-                    FirstName char(50),
-                    LastName char(50),
-                    Email char(50),
-                    UNIQUE (Email)
-                )";
+                // // Create new table
+                // echo "<br> resetting art owner table <br>";
+                // //$sql = file_get_contents('initialize.sql');
+                // $sql = "CREATE TABLE ArtOwner(
+                //     OwnerID integer PRIMARY KEY,
+                //     FirstName char(50),
+                //     LastName char(50),
+                //     Email char(50),
+                //     UNIQUE (Email)
+                // )";
 
-                // actually runs the sql code above
-                executePlainSQL($sql, "create initial tables");
-                OCICommit($db_conn);
+                // // actually runs the sql code above
+                // executePlainSQL($sql, "create initial tables");
+                // OCICommit($db_conn);
             }
 
             function handleOwnerInsertRequest() {
@@ -236,7 +236,7 @@
             function handleGETRequest() {
                 if (connectToDB()) {
                     if (array_key_exists('displayTablesRequest', $_GET)) {
-                        echo"2";
+                        //echo"2";
                         handleArtOwnerDisplayRequest();
                     } else if (array_key_exists('displayTuples', $_GET)) {
                         handleDisplayRequest();
@@ -251,7 +251,7 @@
                 
                 handlePOSTRequest();
             } else if (isset($_GET['display']) || isset($_GET['displayTupleRequest'])) {
-                echo"1";
+                //echo"1";
                 handleGETRequest();
             }
 
