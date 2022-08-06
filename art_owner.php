@@ -1,42 +1,4 @@
 
-
-<html>
-    
-    <head>
-        <title>Art Owner Page</title>
-        <link rel="stylesheet" href="style.css">
-    </head>
-    
-        <body>
-
-            <h2>Reset</h2>
-            <p>If you wish to reset the table press on the reset button.</p>
-
-            <form method="POST" action="wrapper.php">
-                <!-- if you want another page to load after the button is clicked, you have to specify that page in the action parameter -->
-                <input type="hidden" id="resetTablesRequest" name="resetTablesRequest">
-                <p><input type="submit" value="Reset" name="reset"></p>
-            </form>
-
-            <h2>Display Art Owners</h2>
-            <form method="POST" action="wrapper.php">
-                <!-- if you want another page to load after the button is clicked, you have to specify that page in the action parameter -->
-                <input type="hidden" id="displayTablesRequest" name="displayTablesRequest">
-                <p><input type="submit" value="Display" name="display"></p>
-            </form>
-
-            <h2>Art Owner Signup</h2>
-            <form method="POST" action="wrapper.php"> <!--refresh page when submitted-->
-                <input type="hidden" id="insertQueryRequest" name="insertQueryRequest">
-                First Name: <input type="text" name="insFN"> <br /><br />
-                Last Name: <input type="text" name="insLN"> <br /><br />
-                Email: <input type="text" name="insemail"> <br /><br />
-
-                <input type="submit" value="Insert" name="insertSubmit"></p>
-            </form>
-
-            <hr />
-    
             <?php
             /**
              * Credit to oracle for code used in displaying art owners
@@ -113,30 +75,55 @@
                 OCILogoff($db_conn);
             }
 
-            function printResult($result) { //prints results from a select statement
+            function printArtOwnerResult($result) { //prints results from a select statement
                 echo "<br>Retrieved data from table demoTable:<br>";
                 echo "<table>";
                 echo "<tr><th>fn</th><th>ln</th></tr>";
     
                 while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-                    echo "<tr><td>" . $row["FIRSTNAME"] . "</td><td>" . $row["LASTNAME"] . "</td></tr>"; //or just use "echo $row[0]"
+                    echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td></tr>"; //or just use "echo $row[0]"
                 }
     
                 echo "</table>";
             }
+
+            function printResult($result) { //prints results from a select statement
+                echo "<br>Retrieved data from table demoTable:<br>";
+                echo "<table>";
+                echo "<tr><th>ID</th><th>Name</th></tr>";
+    
+                while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+                    echo "<tr><td>" . $row["ID"] . "</td><td>" . $row["NAME"] . "</td></tr>"; //or just use "echo $row[0]" 
+                }
+    
+                echo "</table>";
+            }
+
+            function handleDisplayRequest() {
+                global $db_conn;
+    
+                $result = executePlainSQL("SELECT id, name FROM demoTable");
+    
+                // if (($row = oci_fetch_row($result)) != false) {
+                    printResult($result);
+                // }
+            }
             
             
-            function handleDisplayRequest(){
+            function handleArtOwnerDisplayRequest(){
                 //$db = new \Oracle\Db("initialize", "Mine");
                 global $db_conn;
-                $sql = "SELECT FirstName, LastName FROM ArtOwner";
+                //$sql = "SELECT FirstName, LastName FROM ArtOwner ORDER BY OwnerID";
+
                 // runs a sql query that returns values. the returned info is stored in res
                 //$res = $db->execFetchAll($sql, "Query Example");
-                $res = executePlainSQL($sql);
+                //$res = executePlainSQL($sql);
+                $res = executePlainSQL("SELECT FirstName, LastName FROM ArtOwner");
+                OCICommit($db_conn);
                 // echo "<pre>"; var_dump($res); echo "</pre>\n";
                 // create table
                 //printResult(executePlainSQL("SELECT * FROM ArtOwner"));
-                printResult($res);
+                printArtOwnerResult($res);
                 // echo "<table border='1'>\n";
                 // echo "</th><th>". "Art Owners" . "</th></tr>";
                 // echo "<tr><th>first name</th><th>last name</th></tr>\n";
@@ -149,7 +136,40 @@
                 // echo "</table>";
                 OCICommit($db_conn);
             }
-
+            function executeBoundSQL($cmdstr, $list) {
+                /* Sometimes the same statement will be executed several times with different values for the variables involved in the query.
+            In this case you don't need to create the statement several times. Bound variables cause a statement to only be
+            parsed once and you can reuse the statement. This is also very useful in protecting against SQL injection.
+            See the sample code below for how this function is used */
+    
+                global $db_conn, $success;
+                $statement = OCIParse($db_conn, $cmdstr);
+    
+                if (!$statement) {
+                    echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
+                    $e = OCI_Error($db_conn);
+                    echo htmlentities($e['message']);
+                    $success = False;
+                }
+    
+                foreach ($list as $tuple) {
+                    foreach ($tuple as $bind => $val) {
+                        //echo $val;
+                        //echo "<br>".$bind."<br>";
+                        OCIBindByName($statement, $bind, $val);
+                        unset ($val); //make sure you do not remove this. Otherwise $val will remain in an array object wrapper which will not be recognized by Oracle as a proper datatype
+                    }
+    
+                    $r = OCIExecute($statement, OCI_DEFAULT);
+                    if (!$r) {
+                        echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
+                        $e = OCI_Error($statement); // For OCIExecute errors, pass the statementhandle
+                        echo htmlentities($e['message']);
+                        echo "<br>";
+                        $success = False;
+                    }
+                }
+            }
 
             function handleResetRequest() {
                 global $db_conn;
@@ -178,31 +198,30 @@
                 global $db_conn;
                 //$db = new \Oracle\Db("initialize", "Mine");
                 //Getting the values from user and insert data into the table
-                // $tuple = array (
-                //     ":bind1" => $_POST['inspin'],
-                //     ":bind2" => $_POST['insFN'],
-                //     ":bind3" => $_POST['insLN'],
-                //     ":bind4" => $_POST['insemail']
-                // );
-                $ownerID = 5;
-                $fn = $_POST['insFN'];
-                $ln = $_POST['insLN'];
-                $em = $_POST['insemail'];
+                $tuple = array (
 
-                // $alltuples = array (
-                //     $tuple
-                // );
-                $sql = "INSERT INTO ArtOwner values (40, '" . $fn . "', '" . $ln . "', '" . $em . "')";
+                    ":bind1" => $_POST['insFN'],
+                    ":bind2" => $_POST['insLN'],
+                    ":bind3" => $_POST['insemail']
+                );
+                // $ownerID = 5;
+                // $fn = $_POST['insFN'];
+                // $ln = $_POST['insLN'];
+                // $em = $_POST['insemail'];
+                
+                //$ownerid = ...;
+                $alltuples = array (
+                    $tuple
+                );
+                //$sql = "INSERT INTO ArtOwner values (41, '" . $fn . "', '" . $ln . "', '" . $em . "')";
                 //$sql = "INSERT INTO ArtOwner values (5, 'abcf', 'deff', 'asdfasdff')";
-                executePlainSQL($sql);
+                executeBoundSQL("insert into ArtOwner values (32, :bind1, :bind2, :bind3)", $alltuples);
                 OCICommit($db_conn);
             }
 
             function handlePOSTRequest() {
                 if (connectToDB()){
-                    if (array_key_exists('displayTablesRequest', $_POST)) {
-                        handleDisplayRequest();
-                    } else if (array_key_exists('resetTablesRequest', $_POST)) {
+                    if (array_key_exists('resetTablesRequest', $_POST)) {
                        handleResetRequest();
                     } else if (array_key_exists('insertQueryRequest', $_POST)) {
                         handleOwnerInsertRequest();
@@ -214,10 +233,26 @@
             
             }
 
-            if (isset($_POST['reset']) || isset($_POST['display']) || isset($_POST['insertSubmit'])) {
+            function handleGETRequest() {
+                if (connectToDB()) {
+                    if (array_key_exists('displayTablesRequest', $_GET)) {
+                        echo"2";
+                        handleArtOwnerDisplayRequest();
+                    } else if (array_key_exists('displayTuples', $_GET)) {
+                        handleDisplayRequest();
+                    }
+    
+                    
+                }
+                disconnectFromDB();
+            }
+
+            if (isset($_POST['reset']) || isset($_POST['insertSubmit'])) {
+                
                 handlePOSTRequest();
-            } else if (isset($_GET['countTupleRequest'])) {
-                //handleGETRequest();
+            } else if (isset($_GET['display']) || isset($_GET['displayTupleRequest'])) {
+                echo"1";
+                handleGETRequest();
             }
 
 
