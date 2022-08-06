@@ -65,7 +65,7 @@ CREATE TABLE ArtOwner(
   OwnerID int PRIMARY KEY,
   FirstName VARCHAR2(50),
   LastName VARCHAR2(50),
-  Email VARCHAR2(50),
+  Email VARCHAR2(50) NOT NULL,
   UNIQUE (Email)
 );
 
