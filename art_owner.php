@@ -196,26 +196,34 @@
 
             function handleOwnerInsertRequest() {
                 global $db_conn;
-                //$db = new \Oracle\Db("initialize", "Mine");
+
                 //Getting the values from user and insert data into the table
+                
+                $rowcount = executePlainSQL("SELECT Count(*) FROM ArtOwner");
+                $row = oci_fetch_row($rowcount);
+
+
                 $tuple = array (
 
                     ":bind1" => $_POST['insFN'],
                     ":bind2" => $_POST['insLN'],
                     ":bind3" => $_POST['insemail']
                 );
-                // $ownerID = 5;
-                // $fn = $_POST['insFN'];
-                // $ln = $_POST['insLN'];
-                // $em = $_POST['insemail'];
+                // // $ownerID = 5;
+                // // $fn = $_POST['insFN'];
+                // // $ln = $_POST['insLN'];
+                // // $em = $_POST['insemail'];
                 
-                //$ownerid = ...;
+                $ownerid = "$row[0]" + 1;
+                //echo"$ownerid";
                 $alltuples = array (
                     $tuple
                 );
-                //$sql = "INSERT INTO ArtOwner values (41, '" . $fn . "', '" . $ln . "', '" . $em . "')";
-                //$sql = "INSERT INTO ArtOwner values (5, 'abcf', 'deff', 'asdfasdff')";
-                executeBoundSQL("insert into ArtOwner values (32, :bind1, :bind2, :bind3)", $alltuples);
+                //$sql = "INSERT INTO ArtOwner values ($ownerid, '" . $fn . "', '" . $ln . "', '" . $em . "')";
+                // //$sql = "INSERT INTO ArtOwner values (5, 'abcf', 'deff', 'asdfasdff')";
+                
+                
+                executeBoundSQL("insert into ArtOwner values ($ownerid, :bind1, :bind2, :bind3)", $alltuples);
                 OCICommit($db_conn);
             }
 
