@@ -150,16 +150,16 @@ insert into Art2 values(3, 'Realism');
 insert into Art2 values(4, 'Rococo');
 insert into Art2 values(5, 'Renaissance');
 
-insert into Art3 values(10001, 'Trees', 1150, 7000.00, 2, 1, 301);
-insert into Art3 values(10002, 'Sunflowers', 1160, 8000.99, 2, 1, 301);
-insert into Art3 values(10003, 'wonderful farm', 1980, 100000.00, 1, 2, 401);
-insert into Art3 values(10007, 'Malicious Honesty', 1981, 200000.00, 1, 2, 402);
-insert into Art3 values(20041, 'Clock', 1860, 345000.00, 3, 3, 301);
-insert into Art3 values(20135, 'dramatic mirror', 1865, 4500.89, 3, 3, 301);
-insert into Art3 values(26951, 'The Starry Night', 1744, 5000.00, 4, 4, 301);
-insert into Art3 values(30019, 'Mona Lisa', 1744, 7000000.00, 4, 4, 301);
-insert into Art3 values(32107, 'Display of Patience', 1459, 100000.00, 5, 5, 101);
-insert into Art3 values(35555, 'Lesson', 1470, 150000.00, 5, 5, 101);
+insert into Art3 values(10001, 'Trees', 1150, 7000.00, 2, 1, 301, 5.00);
+insert into Art3 values(10002, 'Sunflowers', 1160, 8000.99, 2, 1, 301, 5.00);
+insert into Art3 values(10003, 'wonderful farm', 1980, 100000.00, 1, 2, 401, 10.00);
+insert into Art3 values(10007, 'Malicious Honesty', 1981, 200000.00, 1, 2, 402, 3.00);
+insert into Art3 values(20041, 'Clock', 1860, 345000.00, 3, 3, 301, 5.00);
+insert into Art3 values(20135, 'dramatic mirror', 1865, 4500.89, 3, 3, 301, 5.00);
+insert into Art3 values(26951, 'The Starry Night', 1744, 5000.00, 4, 4, 301, 5.00);
+insert into Art3 values(30019, 'Mona Lisa', 1744, 7000000.00, 4, 4, 301, 5.00);
+insert into Art3 values(32107, 'Display of Patience', 1459, 100000.00, 5, 5, 101, 2.00);
+insert into Art3 values(35555, 'Lesson', 1470, 150000.00, 5, 5, 101, 2.00);
 
 insert into Painting values(10001);
 insert into Painting values(10002);
