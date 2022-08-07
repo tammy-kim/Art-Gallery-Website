@@ -221,9 +221,10 @@
             }
             function handleOwnerUpdateRequest(){
                 global $db_conn;
-                $old = $_POST['insOldEmail'];
-                $new = $_POST['insNewEmail'];
-                executePlainSQL("UPDATE ArtOwner SET Email='" . $new . "' WHERE Email='" . $old . "'");
+                $curr = $_POST['insCurrEmail'];
+                $new = $_POST['insNewValue'];
+                $radioSelection = $_POST['select_update_value'];
+                executePlainSQL("UPDATE ArtOwner SET " . $radioSelection . "='" . $new . "' WHERE Email='" . $curr . "'");
                 OCICommit($db_conn);
             }
             function handleOwnerDeleteRequest(){
@@ -264,7 +265,7 @@
                 disconnectFromDB();
             }
 
-            if (isset($_POST['reset']) || isset($_POST['insertSubmit'])|| isset($_POST['insertNewEmail'])|| isset($_POST['deleteOwner'])) {
+            if (isset($_POST['reset']) || isset($_POST['insertSubmit'])|| isset($_POST['insertNewValue'])|| isset($_POST['deleteOwner'])) {
                 
                 handlePOSTRequest();
             } else if (isset($_GET['display']) ) {

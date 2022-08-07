@@ -29,13 +29,19 @@
                 <input type="submit" value="Insert" name="insertSubmit"></p>
             </form>
 
-            <h2>Art Owner Update Email</h2>
+            <h2>Art Owner Update Information</h2>
             <form method="POST" action="index.php"> <!--refresh page when submitted-->
                 <input type="hidden" id="updateOwnerQueryRequest" name="updateOwnerQueryRequest">
-                Old email: <input type="text" name="insOldEmail"> <br /><br />
-                New email: <input type="text" name="insNewEmail"> <br /><br />
+                <input type="radio" id="first_name" name="select_update_value" value="FirstName">
+                <label for="first_name">First Name</label><br>
+                <input type="radio" id="last_name" name="select_update_value" value="LastName">
+                <label for="last_name">Last Name</label><br>
+                <input type="radio" id="email" name="select_update_value" value="Email">
+                <label for="email">Email</label><br>
+                Current email: <input type="text" name="insCurrEmail"> <br /><br />
+                New First Name/Last Name/Email: <input type="text" name="insNewValue"> <br /><br />
 
-                <input type="submit" value="Update" name="insertNewEmail"></p>
+                <input type="submit" value="Update" name="insertNewValue"></p>
             </form>
 
             <h2>Art Owner Delete Account</h2>
