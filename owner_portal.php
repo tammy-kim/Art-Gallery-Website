@@ -70,17 +70,7 @@
         OCILogoff($db_conn);
     }
 
-    function printArtOwnerResult($result) { //prints results from a select statement
-        echo "<br>Retrieved data from table demoTable:<br>";
-        echo "<table>";
-        echo "<tr><th>fn</th><th>ln</th></tr>";
 
-        while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-            echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td></tr>"; //or just use "echo $row[0]"
-        }
-
-        echo "</table>";
-    }
 
     function handleLoginRequest() {
         global $db_conn;
