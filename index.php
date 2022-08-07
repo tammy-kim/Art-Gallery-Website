@@ -6,6 +6,10 @@
     </head>
     
         <body>
+            <div class="vertical-menu">
+                <a href="index.php" class="active">Account Management</a>
+                <a href="art_index.php">Art Owner Portal</a>
+            </div>
 
 
             <h2>Display Art Owners</h2>

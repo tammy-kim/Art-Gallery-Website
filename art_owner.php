@@ -1,18 +1,11 @@
-
-            <?php
-            /**
-             * Credit to oracle for code used in displaying art owners
-             * https://docs.oracle.com/database/121/TDPPH/ch_three_db_access_class.htm#TDPPH147
-             * ac_cred.inc.php: Secret Connection Credentials for a database class
-             * @package Oracle
-             */
+<?php
+                /**
+                 * Credit to Test Oracle file for UBC CPSC304 2018 Winter Term 1
+                 * Created by Jiemin Zhang
+                 * Modified by Simona Radu
+                 * Modified by Jessica Wong (2018-06-22)
+                 */
             
-            //require('ac_db.inc.php');
-            //require('init.php');
-            // this sets up a connection to the oracle database. The names don't really matter
-            //$db = new \Oracle\Db("test_db", "Mine");
-            		//this tells the system that it's no longer just parsing html; it's now parsing PHP
-
             $success = True; //keep track of errors so it redirects the page only if there are no errors
             $db_conn = NULL; // edit the login credentials in connectToDB()
             $show_debug_alert_messages = False; // set to True if you want alerts to show you which methods are being triggered (see how it is used in debugAlertMessage())
@@ -280,10 +273,4 @@
             }
 
 
-
-            
-            // $drop = "DROP TABLE ArtOwner";
-            // $db->execute($drop, "delete the artowner table");
             ?>
-        </body>
-    </html>
