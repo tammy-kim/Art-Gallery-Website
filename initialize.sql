@@ -45,7 +45,7 @@ CREATE TABLE Room
 	(RoomNumber int PRIMARY KEY,
 	FloorNumber int NOT NULL,
 	ExhibitionName VARCHAR2(50),
-	StartDate date
+	StartDate date,
 	FOREIGN KEY (ExhibitionName, StartDate) REFERENCES Exhibition (ExhibitionName, StartDate) ON DELETE CASCADE);
 grant select on Room to public;
 
@@ -122,17 +122,17 @@ insert into ArtOwner values(3, 'Tommy', 'Nook', 'Tommy@islandmail.com');
 insert into ArtOwner values(4, 'Isabelle', NULL, 'Isabelle@islandmail.com');
 insert into ArtOwner values(5, 'Blanca', 'Neko', 'blankaiscat@gmail.com');
 
-insert into Exhibition values('Kids Take Over', '4/1/2022', '8/31/2022');
-insert into Exhibition values('In Memory of Andrew Green', '5/20/2022', '7/15/2022');
-insert into Exhibition values('Art Connects', '5/20/2022', '7/31/2022');
-insert into Exhibition values('Canadian Women Artists in Modern Moment', '6/1/2022', '8/31/2022');
-insert into Exhibition values('Spotlight: John Doe', '8/2/2022', '12/1/2022');
+insert into Exhibition values('Kids Take Over', TO_DATE('4/1/2022', 'MM/DD/YYYY'), TO_DATE('8/31/2022', 'MM/DD/YYYY'));
+insert into Exhibition values('In Memory of Andrew Green', TO_DATE('5/20/2022', 'MM/DD/YYYY'), TO_DATE('7/15/2022', 'MM/DD/YYYY'));
+insert into Exhibition values('Art Connects', TO_DATE('5/20/2022', 'MM/DD/YYYY'), TO_DATE('7/31/2022', 'MM/DD/YYYY'));
+insert into Exhibition values('Canadian Women Artists in Modern Moment', TO_DATE('6/1/2022', 'MM/DD/YYYY'), TO_DATE('8/31/2022', 'MM/DD/YYYY'));
+insert into Exhibition values('Spotlight: John Doe', TO_DATE('8/2/2022', 'MM/DD/YYYY'), TO_DATE('12/1/2022', 'MM/DD/YYYY'));
 
-insert into Room values(101, 1, 'Kids Take Over', '4/1/2022');
-insert into Room values(201, 2, 'In Memory of Andrew Green', '5/20/2022');
-insert into Room values(301, 3, 'Art Connects', '5/20/2022');
-insert into Room values(401, 4, 'Spotlight: John Doe', '8/2/2022');
-insert into Room values(402, 4, 'Spotlight: John Doe', '8/2/2022');
+insert into Room values(101, 1, 'Kids Take Over', TO_DATE('4/1/2022', 'MM/DD/YYYY'));
+insert into Room values(201, 2, 'In Memory of Andrew Green', TO_DATE('5/20/2022', 'MM/DD/YYYY'));
+insert into Room values(301, 3, 'Art Connects', TO_DATE('5/20/2022', 'MM/DD/YYYY'));
+insert into Room values(401, 4, 'Spotlight: John Doe', TO_DATE('8/2/2022', 'MM/DD/YYYY'));
+insert into Room values(402, 4, 'Spotlight: John Doe', TO_DATE('8/2/2022', 'MM/DD/YYYY'));
 
 insert into Art1 values(1150, 'Gothic');
 insert into Art1 values(1160, 'Gothic');
@@ -150,16 +150,16 @@ insert into Art2 values(3, 'Realism');
 insert into Art2 values(4, 'Rococo');
 insert into Art2 values(5, 'Renaissance');
 
-insert into Art3 values(10001, 'Trees', 1150, 7000.00, 2, 1, 301);
-insert into Art3 values(10002, 'Sunflowers', 1160, 8000.99, 2, 1, 301);
-insert into Art3 values(10003, 'wonderful farm', 1980, 100000.00, 1, 2, 401);
-insert into Art3 values(10007, 'Malicious Honesty', 1981, 200000.00, 1, 2, 402);
-insert into Art3 values(20041, 'Clock', 1860, 345000.00, 3, 3, 301);
-insert into Art3 values(20135, 'dramatic mirror', 1865, 4500.89, 3, 3, 301);
-insert into Art3 values(26951, 'The Starry Night', 1744, 5000.00, 4, 4, 301);
-insert into Art3 values(30019, 'Mona Lisa', 1744, 7000000.00, 4, 4, 301);
-insert into Art3 values(32107, 'Display of Patience', 1459, 100000.00, 5, 5, 101);
-insert into Art3 values(35555, 'Lesson', 1470, 150000.00, 5, 5, 101);
+insert into Art3 values(10001, 'Trees', 1150, 7000.00, 2, 1, 301, 5.00);
+insert into Art3 values(10002, 'Sunflowers', 1160, 8000.99, 2, 1, 301, 5.00);
+insert into Art3 values(10003, 'wonderful farm', 1980, 100000.00, 1, 2, 401, 10.00);
+insert into Art3 values(10007, 'Malicious Honesty', 1981, 200000.00, 1, 2, 402, 3.00);
+insert into Art3 values(20041, 'Clock', 1860, 345000.00, 3, 3, 301, 5.00);
+insert into Art3 values(20135, 'dramatic mirror', 1865, 4500.89, 3, 3, 301, 5.00);
+insert into Art3 values(26951, 'The Starry Night', 1744, 5000.00, 4, 4, 301, 5.00);
+insert into Art3 values(30019, 'Mona Lisa', 1744, 7000000.00, 4, 4, 301, 5.00);
+insert into Art3 values(32107, 'Display of Patience', 1459, 100000.00, 5, 5, 101, 2.00);
+insert into Art3 values(35555, 'Lesson', 1470, 150000.00, 5, 5, 101, 2.00);
 
 insert into Painting values(10001);
 insert into Painting values(10002);
@@ -179,12 +179,12 @@ insert into Buyer_Purchase values('Traci', 'Bolton', 'traciBolts@gmail.com', 420
 insert into Buyer_Purchase values('Lynn', 'Horne', 'lynnhorne234@gmail.com', 20000.99, 32107);
 insert into Buyer_Purchase values('Jessie', 'Good', 'jessielovesart@gmail.com', 55000.49, 35555);
 
-insert into Ticket values(100, 5.00, '6/10/2022', 'Kids Take Over', '4/1/2022');
-insert into Ticket values(101, 5.00, '6/14/2022', 'Kids Take Over', '4/1/2022');
-insert into Ticket values(103, 5.00, '6/22/2022', 'Kids Take Over', '4/1/2022');
-insert into Ticket values(104, 5.00, '7/1/2022', 'Kids Take Over', '4/1/2022');
-insert into Ticket values(105, 10.00, '7/5/2022', 'Art Connects', '5/20/2022');
-insert into Ticket values(106, 10.00, '7/11/2022', 'Art Connects', '5/20/2022');
-insert into Ticket values(107, 7.00, '7/12/2022', 'Art Connects', '5/20/2022');
-insert into Ticket values(108, 5.00, '8/3/2022', 'Spotlight: John Doe', '8/2/2022');
-insert into Ticket values(109, 10.00, '8/3/2022', 'Spotlight: John Doe', '8/2/2022');
+insert into Ticket values(100, 5.00, TO_DATE('6/10/2022', 'MM/DD/YYYY'), 'Kids Take Over', TO_DATE('4/1/2022', 'MM/DD/YYYY'));
+insert into Ticket values(101, 5.00, TO_DATE('6/14/2022', 'MM/DD/YYYY'), 'Kids Take Over', TO_DATE('4/1/2022', 'MM/DD/YYYY'));
+insert into Ticket values(103, 5.00, TO_DATE('6/22/2022', 'MM/DD/YYYY'), 'Kids Take Over', TO_DATE('4/1/2022', 'MM/DD/YYYY'));
+insert into Ticket values(104, 5.00, TO_DATE('7/1/2022', 'MM/DD/YYYY'), 'Kids Take Over', TO_DATE('4/1/2022', 'MM/DD/YYYY'));
+insert into Ticket values(105, 10.00, TO_DATE('7/5/2022', 'MM/DD/YYYY'), 'Art Connects', TO_DATE('5/20/2022', 'MM/DD/YYYY'));
+insert into Ticket values(106, 10.00, TO_DATE('7/11/2022', 'MM/DD/YYYY'), 'Art Connects', TO_DATE('5/20/2022', 'MM/DD/YYYY'));
+insert into Ticket values(107, 7.00, TO_DATE('7/12/2022', 'MM/DD/YYYY'), 'Art Connects', TO_DATE('5/20/2022', 'MM/DD/YYYY'));
+insert into Ticket values(108, 5.00, TO_DATE('8/3/2022', 'MM/DD/YYYY'), 'Spotlight: John Doe', TO_DATE('8/2/2022', 'MM/DD/YYYY'));
+insert into Ticket values(109, 10.00, TO_DATE('8/3/2022', 'MM/DD/YYYY'), 'Spotlight: John Doe', TO_DATE('8/2/2022', 'MM/DD/YYYY'));
