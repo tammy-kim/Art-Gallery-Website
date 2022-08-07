@@ -122,17 +122,28 @@
         //echo "$userEmail";
         $radioSelection = $_GET['select_art_type'];
 
-        if ($radioSelection == "painting"){
+        if ($radioSelection == "Paintings"){
             $fetchMyArt = executePlainSQL("SELECT a.Title FROM ArtOwner ao, Art3 a, Painting p WHERE a.OwnerID = ao.OwnerID AND a.IdentificationNumber = p.IdentificationNumber AND Email='" . $userEmail . "'");
-        } else if ($radioSelection == "sculpture"){
+        } else if ($radioSelection == "Sculptures"){
             $fetchMyArt = executePlainSQL("SELECT a.Title FROM ArtOwner ao, Art3 a, Sculpture s WHERE a.OwnerID = ao.OwnerID AND a.IdentificationNumber = s.IdentificationNumber AND Email='" . $userEmail . "'");
         } else {
             $fetchMyArt = executePlainSQL("SELECT a.Title FROM ArtOwner ao, Art3 a WHERE a.OwnerID = ao.OwnerID AND ao.Email='" . $userEmail . "'");
         }
-        //$fetchMyArt = executePlainSQL("SELECT a.Title FROM ArtOwner ao, Art3 a WHERE a.OwnerID = ao.OwnerID AND Email='" . $userEmail . "'");
         echo "<br>List of art I own: <br>";
         echo "$radioSelection";
         printMyArt($fetchMyArt);
+    }
+
+    function printMyFees($result) { //prints results from a select statement
+        echo "<br>Fee to exhibit my art, grouped by medium<br>";
+        echo "<table>";
+        echo "<tr><th>Medium</th><th>Total Fees</th></tr>";
+
+        while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+            echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td></tr>"; //or just use "echo $row[0]"
+        }
+
+        echo "</table>";
     }
 
     function handleSeeMyFeesRequest() {
@@ -145,13 +156,12 @@
         //exit();
         //echo "$userEmail";
 
+        executePlainSQL("drop view myArt");
+
         // create a view where art is labeled with it's medium type. Only contains art owned by logged in owner.
         executePlainSQL("CREATE VIEW myArt(artID, Medium) AS 
-                                        SELECT a.IdentificationNumber, 'N/A' as Medium
-                                        FROM ArtOwner ao, Art3 a, Sculpture s, Painting p
-                                        WHERE a.OwnerID = ao.OwnerID AND a.IdentificationNumber <> s.IdentificationNumber AND a.IdentificationNumber <> p.IdentificationNumber AND ao.Email='" . $userEmail . "'
 
-                                        UNION 
+                                        
                                         SELECT a.IdentificationNumber, 'Sculpture' as Medium
                                         FROM ArtOwner ao, Art3 a, Sculpture s
                                         WHERE a.OwnerID = ao.OwnerID AND a.IdentificationNumber = s.IdentificationNumber AND ao.Email='" . $userEmail . "'
@@ -160,14 +170,21 @@
                                         SELECT a.IdentificationNumber, 'Painting' as Medium
                                         FROM ArtOwner ao, Art3 a, Painting p
                                         WHERE a.OwnerID = ao.OwnerID AND a.IdentificationNumber = p.IdentificationNumber AND ao.Email='" . $userEmail . "' 
-                                         ");
+                                        UNION 
+                                        
+                                        SELECT a.IdentificationNumber, 'N/A' as Medium
+                                        FROM ArtOwner ao, Art3 a
+                                        WHERE a.OwnerID = ao.OwnerID AND ao.Email='" . $userEmail . "'
+                                        AND a.IdentificationNumber NOT IN (SELECT s.IdentificationNumber FROM Sculpture s UNION SELECT p.IdentificationNumber FROM Painting p)
+ 
+                                        ");
         
-        $fetchMyFees = executePlainSQL("SELECT ma.Medium, SUM(a.ExhibitionFee)
-                                        FROM Art3 a, myArt ma
-                                        WHERE a.IdentificationNumber = ma.IdentificationNumber
-                                        GROUP BY ma.Medium");
+        $fetchMyFees = executePlainSQL("SELECT m.Medium, SUM(a.ExhibitionFee)
+                                        FROM Art3 a, myArt m
+                                        WHERE a.IdentificationNumber = m.ArtID
+                                        GROUP BY m.Medium");
 
-        //printMyFees($fetchMyFees);
+        printMyFees($fetchMyFees);
     }
 
     function handleLogoutRequest(){
