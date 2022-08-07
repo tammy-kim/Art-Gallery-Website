@@ -34,7 +34,7 @@
             $success = False;
         }
 
-        $r = OCIExecute($statement, OCI_DEFAULT);
+        $r = OCI_Execute($statement, OCI_DEFAULT);
         if (!$r) {
             echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
             $e = oci_error($statement); // For OCIExecute errors pass the statementhandle
@@ -45,12 +45,13 @@
         return $statement;
     }
     
+    
     function connectToDB() {
         global $db_conn;
 
         // Your username is ora_(CWL_ID) and the password is a(student number). For example,
         // ora_platypus is the username and a12345678 is the password.
-        $db_conn = OCILogon("ora_minesher", "a28495142", "dbhost.students.cs.ubc.ca:1522/stu");
+        $db_conn = OCILogon("ora_yak226", "a30777149", "dbhost.students.cs.ubc.ca:1522/stu");
 
         if ($db_conn) {
             debugAlertMessage("Database is Connected");
@@ -74,19 +75,19 @@
 
     function handleLoginRequest() {
         global $db_conn;
-        $loginEmail = $_GET['loginEmail'];
+        $loginEmail = $_GET['loginEmail'];  // gets the entered email
+        //echo $loginEmail;
         
-        session_save_path("/home/m/minesher/public_html/project_q2z1b_r0x2b_y5v1r");
+        session_save_path("/home/y/yak226/public_html/project_q2z1b_r0x2b_y5v1r");
         //echo session_save_path();
         session_start(); # start session handling.
         $_SESSION['current_user']=$loginEmail;
         //exit();
         
-        $fetchName = executePlainSQL("SELECT FirstName FROM ArtOwner WHERE Email='" . $loginEmail . "'");
-        $userName = oci_fetch_row($fetchName);
+        $fetchName = executePlainSQL("SELECT FirstName FROM ArtOwner WHERE Email='$loginEmail'");  // get FirstName column from ArtOwner with loginEmail... should only be one row since email is unique.
+        $userName = OCI_Fetch_Array($fetchName);
         echo "welcome to the gallery ";
-        echo "$userName[0]";
-
+        echo "$userName[0]"; 
     }
 
     function printMyArt($result, $numAttributes) { //prints results from a select statement
