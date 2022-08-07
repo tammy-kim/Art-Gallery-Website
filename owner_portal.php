@@ -139,9 +139,9 @@
         if ($radioSelection == "Paintings"){
             $fetchMyArt = executePlainSQL("SELECT a.Title " . $year . " " . $price . " FROM ArtOwner ao, Art3 a, Painting p WHERE a.OwnerID = ao.OwnerID AND a.IdentificationNumber = p.IdentificationNumber AND Email='" . $userEmail . "'");
         } else if ($radioSelection == "Sculptures"){
-            $fetchMyArt = executePlainSQL("SELECT a.Title FROM ArtOwner ao, Art3 a, Sculpture s WHERE a.OwnerID = ao.OwnerID AND a.IdentificationNumber = s.IdentificationNumber AND Email='" . $userEmail . "'");
+            $fetchMyArt = executePlainSQL("SELECT a.Title " . $year . " " . $price . " FROM ArtOwner ao, Art3 a, Sculpture s WHERE a.OwnerID = ao.OwnerID AND a.IdentificationNumber = s.IdentificationNumber AND Email='" . $userEmail . "'");
         } else {
-            $fetchMyArt = executePlainSQL("SELECT a.Title FROM ArtOwner ao, Art3 a WHERE a.OwnerID = ao.OwnerID AND ao.Email='" . $userEmail . "'");
+            $fetchMyArt = executePlainSQL("SELECT a.Title " . $year . " " . $price . " FROM ArtOwner ao, Art3 a WHERE a.OwnerID = ao.OwnerID AND ao.Email='" . $userEmail . "'");
         }
         echo "<br>List of art I own: <br>";
         echo "$radioSelection";
