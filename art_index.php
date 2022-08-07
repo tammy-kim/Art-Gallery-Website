@@ -12,9 +12,22 @@
         </div>
 
         <h2>Login</h2>
-            <form method="GET" action="art_index.php">
+            <form method="GET" action="wrapper.php">
                 <input type="hidden" id="loginRequest" name="loginRequest">
+                Email: <input type="text" name="loginEmail"> <br /><br />
                 <p><input type="submit" value="Login" name="login"></p>
+            </form>
+        
+        <h2>View My Artwork</h2>
+            <form method="GET" action="wrapper.php">
+                <input type="hidden" id="seeMyArtRequest" name="seeMyArtRequest">
+                <p><input type="submit" value="View" name="view"></p>
+            </form>
+
+        <h2>Logout</h2>
+            <form method="GET" action="wrapper.php">
+                <input type="hidden" id="logoutRequest" name="logoutRequest">
+                <p><input type="submit" value="Logout" name="logout"></p>
             </form>
 
 

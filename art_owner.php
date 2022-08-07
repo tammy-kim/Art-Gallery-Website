@@ -69,7 +69,7 @@
             }
 
             function printArtOwnerResult($result) { //prints results from a select statement
-                echo "<br>Retrieved data from table demoTable:<br>";
+                echo "<br>List of registered Art Owners<br>";
                 echo "<table>";
                 echo "<tr><th>fn</th><th>ln</th></tr>";
     

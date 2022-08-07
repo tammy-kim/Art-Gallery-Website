@@ -9,7 +9,7 @@
 
     $success = True; //keep track of errors so it redirects the page only if there are no errors
     $db_conn = NULL; // edit the login credentials in connectToDB()
-    $show_debug_alert_messages = True; // set to True if you want alerts to show you which methods are being triggered (see how it is used in debugAlertMessage())
+    $show_debug_alert_messages = False; // set to True if you want alerts to show you which methods are being triggered (see how it is used in debugAlertMessage())
     $current_user = NULL; // person who logs in
 
     function debugAlertMessage($message) {
@@ -84,7 +84,54 @@
 
     function handleLoginRequest() {
         global $db_conn;
-        echo"heelo";
+        $loginEmail = $_GET['loginEmail'];
+        
+        session_save_path("/home/m/minesher/public_html/project_q2z1b_r0x2b_y5v1r");
+        //echo session_save_path();
+        session_start(); # start session handling.
+        $_SESSION['current_user']=$loginEmail;
+        //exit();
+        
+        $fetchName = executePlainSQL("SELECT FirstName FROM ArtOwner WHERE Email='" . $loginEmail . "'");
+        $userName = oci_fetch_row($fetchName);
+        echo "welcome to the gallery ";
+        echo "$userName[0]";
+
+    }
+
+    function printMyArt($result) { //prints results from a select statement
+        echo "<br>List of art I own<br>";
+        echo "<table>";
+        echo "<tr><th>title</th></tr>";
+
+        while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+            echo "<tr><td>" . $row[0] . "</td></tr>"; //or just use "echo $row[0]"
+        }
+
+        echo "</table>";
+    }
+
+    function handleSeeMyArtRequest() {
+        global $db_conn;
+        $userEmail = NULL;
+        session_save_path("/home/m/minesher/public_html/project_q2z1b_r0x2b_y5v1r");
+        session_start(); # start session handling again.
+        //echo $_SESSION['current_user'];
+        $userEmail = $_SESSION['current_user'];
+        //exit();
+        //echo "$userEmail";
+        $fetchMyArt = executePlainSQL("SELECT a.Title FROM ArtOwner ao, Art3 a WHERE a.OwnerID = ao.OwnerID AND Email='" . $userEmail . "'");
+        printMyArt($fetchMyArt);
+    }
+
+    function handleLogoutRequest(){
+        session_save_path("/home/m/minesher/public_html/project_q2z1b_r0x2b_y5v1r");
+
+        session_start(); # start session handling.
+        //echo $_SESSION['current_user'];
+        $_SESSION['current_user']=NULL;
+        echo "You have been logged out";
+        exit();
     }
 
     function handlePOSTRequest() {
@@ -103,6 +150,12 @@
             if (array_key_exists('loginRequest', $_GET)) {
                 //echo"2";
                 handleLoginRequest();
+            } else if (array_key_exists('seeMyArtRequest', $_GET)) {
+                //echo"2";
+                handleSeeMyArtRequest();
+            } else if (array_key_exists('logoutRequest', $_GET)) {
+                //echo"2";
+                handleLogoutRequest();
             } 
         }
         disconnectFromDB();
@@ -111,7 +164,7 @@
     if (isset($_POST['reset']) ) {
         
         handlePOSTRequest();
-    } else if (isset($_GET['login']) ) {
+    } else if (isset($_GET['login']) || isset($_GET['view']) || isset($_GET['logout'])) {
         //echo"get";
         handleGETRequest();
     }
