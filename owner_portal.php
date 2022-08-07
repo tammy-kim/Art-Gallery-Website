@@ -91,8 +91,8 @@
         if (connectToDB()){
             if (array_key_exists('resetTablesRequest', $_POST)) {
                handleResetRequest();
+                }
         }
-
 
         disconnectFromDB();
     
@@ -112,8 +112,9 @@
         
         handlePOSTRequest();
     } else if (isset($_GET['login']) ) {
-        echo"get";
+        //echo"get";
         handleGETRequest();
     }
+    
 
-?>
+    ?>

@@ -19,6 +19,7 @@
 
 
         <?php
+            //echo"hello";
             require_once('owner_portal.php');
 
         ?>
