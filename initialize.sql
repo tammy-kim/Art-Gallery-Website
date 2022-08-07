@@ -45,7 +45,7 @@ CREATE TABLE Room
 	(RoomNumber int PRIMARY KEY,
 	FloorNumber int NOT NULL,
 	ExhibitionName VARCHAR2(50),
-	StartDate date
+	StartDate date,
 	FOREIGN KEY (ExhibitionName, StartDate) REFERENCES Exhibition (ExhibitionName, StartDate) ON DELETE CASCADE);
 grant select on Room to public;
 
