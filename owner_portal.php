@@ -127,12 +127,47 @@
         } else if ($radioSelection == "sculpture"){
             $fetchMyArt = executePlainSQL("SELECT a.Title FROM ArtOwner ao, Art3 a, Sculpture s WHERE a.OwnerID = ao.OwnerID AND a.IdentificationNumber = s.IdentificationNumber AND Email='" . $userEmail . "'");
         } else {
-            $fetchMyArt = executePlainSQL("SELECT a.Title FROM ArtOwner ao, Art3 a WHERE a.OwnerID = ao.OwnerID AND Email='" . $userEmail . "'");
+            $fetchMyArt = executePlainSQL("SELECT a.Title FROM ArtOwner ao, Art3 a WHERE a.OwnerID = ao.OwnerID AND ao.Email='" . $userEmail . "'");
         }
         //$fetchMyArt = executePlainSQL("SELECT a.Title FROM ArtOwner ao, Art3 a WHERE a.OwnerID = ao.OwnerID AND Email='" . $userEmail . "'");
         echo "<br>List of art I own: <br>";
         echo "$radioSelection";
         printMyArt($fetchMyArt);
+    }
+
+    function handleSeeMyFeesRequest() {
+        global $db_conn;
+        $userEmail = NULL;
+        session_save_path("/home/m/minesher/public_html/project_q2z1b_r0x2b_y5v1r");
+        session_start(); # start session handling again.
+        //echo $_SESSION['current_user'];
+        $userEmail = $_SESSION['current_user'];
+        //exit();
+        //echo "$userEmail";
+
+        // create a view where art is labeled with it's medium type. Only contains art owned by logged in owner.
+        executePlainSQL("CREATE VIEW myArt(artID, Medium) AS 
+                                        SELECT a.IdentificationNumber, 'N/A' as Medium
+                                        FROM ArtOwner ao, Art3 a, Sculpture s, Painting p
+                                        WHERE a.OwnerID = ao.OwnerID AND a.IdentificationNumber <> s.IdentificationNumber AND a.IdentificationNumber <> p.IdentificationNumber AND ao.Email='" . $userEmail . "'
+
+                                        UNION 
+                                        SELECT a.IdentificationNumber, 'Sculpture' as Medium
+                                        FROM ArtOwner ao, Art3 a, Sculpture s
+                                        WHERE a.OwnerID = ao.OwnerID AND a.IdentificationNumber = s.IdentificationNumber AND ao.Email='" . $userEmail . "'
+                                        
+                                        UNION 
+                                        SELECT a.IdentificationNumber, 'Painting' as Medium
+                                        FROM ArtOwner ao, Art3 a, Painting p
+                                        WHERE a.OwnerID = ao.OwnerID AND a.IdentificationNumber = p.IdentificationNumber AND ao.Email='" . $userEmail . "' 
+                                         ");
+        
+        $fetchMyFees = executePlainSQL("SELECT ma.Medium, SUM(a.ExhibitionFee)
+                                        FROM Art3 a, myArt ma
+                                        WHERE a.IdentificationNumber = ma.IdentificationNumber
+                                        GROUP BY ma.Medium");
+
+        //printMyFees($fetchMyFees);
     }
 
     function handleLogoutRequest(){
@@ -167,7 +202,10 @@
             } else if (array_key_exists('logoutRequest', $_GET)) {
                 //echo"2";
                 handleLogoutRequest();
-            } 
+            } else if (array_key_exists('seeMyFeesRequest', $_GET)) {
+                //echo"2";
+                handleSeeMyFeesRequest();
+            }  
         }
         disconnectFromDB();
     }
@@ -175,7 +213,7 @@
     if (isset($_POST['reset']) ) {
         
         handlePOSTRequest();
-    } else if (isset($_GET['login']) || isset($_GET['view']) || isset($_GET['logout'])) {
+    } else if (isset($_GET['login']) || isset($_GET['view']) || isset($_GET['logout']) || isset($_GET['sum_fees'])) {
         //echo"get";
         handleGETRequest();
     }

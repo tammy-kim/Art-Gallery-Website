@@ -31,10 +31,10 @@
                 <p><input type="submit" value="View" name="view"></p>
             </form>
         
-        <h2>My Total Exhibition Fees</h2>
+        <h2>My Exhibition Fees</h2>
             <form method="GET" action="wrapper.php">
-                <input type="hidden" id="seeMyArtRequest" name="seeMyArtRequest">
-                <p><input type="submit" value="View" name="view"></p>
+                <input type="hidden" id="seeMyFeesRequest" name="seeMyFeesRequest">
+                <p><input type="submit" value="Sum Fees" name="sum_fees"></p>
             </form>
 
         <h2>Logout</h2>
