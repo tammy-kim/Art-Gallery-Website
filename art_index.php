@@ -18,7 +18,20 @@
                 <p><input type="submit" value="Login" name="login"></p>
             </form>
         
-        <h2>View My Artwork</h2>
+        <h2>View My Artwork in the Gallery</h2>
+            <form method="GET" action="wrapper.php">
+                <input type="hidden" id="seeMyArtRequest" name="seeMyArtRequest">
+                <input type="radio" id="all" name="select_art_type" value="All">
+                <label for="all">All</label><br>
+                <input type="radio" id="paintings" name="select_art_type" value="Paintings">
+                <label for="paintings">Paintings</label><br>
+                <input type="radio" id="sculptures" name="select_art_type" value="Sculptures">
+                <label for="sculptures">Sculptures</label>
+                
+                <p><input type="submit" value="View" name="view"></p>
+            </form>
+        
+        <h2>My Total Exhibition Fees</h2>
             <form method="GET" action="wrapper.php">
                 <input type="hidden" id="seeMyArtRequest" name="seeMyArtRequest">
                 <p><input type="submit" value="View" name="view"></p>

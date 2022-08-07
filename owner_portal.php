@@ -100,7 +100,7 @@
     }
 
     function printMyArt($result) { //prints results from a select statement
-        echo "<br>List of art I own<br>";
+        
         echo "<table>";
         echo "<tr><th>title</th></tr>";
 
@@ -120,7 +120,18 @@
         $userEmail = $_SESSION['current_user'];
         //exit();
         //echo "$userEmail";
-        $fetchMyArt = executePlainSQL("SELECT a.Title FROM ArtOwner ao, Art3 a WHERE a.OwnerID = ao.OwnerID AND Email='" . $userEmail . "'");
+        $radioSelection = $_GET['select_art_type'];
+
+        if ($radioSelection == "painting"){
+            $fetchMyArt = executePlainSQL("SELECT a.Title FROM ArtOwner ao, Art3 a, Painting p WHERE a.OwnerID = ao.OwnerID AND a.IdentificationNumber = p.IdentificationNumber AND Email='" . $userEmail . "'");
+        } else if ($radioSelection == "sculpture"){
+            $fetchMyArt = executePlainSQL("SELECT a.Title FROM ArtOwner ao, Art3 a, Sculpture s WHERE a.OwnerID = ao.OwnerID AND a.IdentificationNumber = s.IdentificationNumber AND Email='" . $userEmail . "'");
+        } else {
+            $fetchMyArt = executePlainSQL("SELECT a.Title FROM ArtOwner ao, Art3 a WHERE a.OwnerID = ao.OwnerID AND Email='" . $userEmail . "'");
+        }
+        //$fetchMyArt = executePlainSQL("SELECT a.Title FROM ArtOwner ao, Art3 a WHERE a.OwnerID = ao.OwnerID AND Email='" . $userEmail . "'");
+        echo "<br>List of art I own: <br>";
+        echo "$radioSelection";
         printMyArt($fetchMyArt);
     }
 
