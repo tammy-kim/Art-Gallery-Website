@@ -21,13 +21,19 @@
         <h2>View My Artwork in the Gallery</h2>
             <form method="GET" action="wrapper.php">
                 <input type="hidden" id="seeMyArtRequest" name="seeMyArtRequest">
+                <p>Choose Medium</p>
                 <input type="radio" id="all" name="select_art_type" value="All">
                 <label for="all">All</label><br>
                 <input type="radio" id="paintings" name="select_art_type" value="Paintings">
                 <label for="paintings">Paintings</label><br>
                 <input type="radio" id="sculptures" name="select_art_type" value="Sculptures">
                 <label for="sculptures">Sculptures</label>
-                
+                <p>Choose Attributes to Display</p>
+                <input type="checkbox" id="year" name="attributeYear" value=", a.YearCreated">
+                <label for="year"> Year</label><br>
+
+                <input type="checkbox" id="price" name="attributePrice" value=", a.Price">
+                <label for="price"> Price</label><br>
                 <p><input type="submit" value="View" name="view"></p>
             </form>
         

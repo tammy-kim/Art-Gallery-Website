@@ -89,16 +89,25 @@
 
     }
 
-    function printMyArt($result) { //prints results from a select statement
+    function printMyArt($result, $numAttributes) { //prints results from a select statement
         
         echo "<table>";
-        echo "<tr><th>title</th></tr>";
+        //echo "<tr><th>title</th></tr>";
 
         while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-            echo "<tr><td>" . $row[0] . "</td></tr>"; //or just use "echo $row[0]"
+            if ($numAttributes == 1){
+                echo "<tr><td>" . $row[0] . "</td></tr>";
+            }
+            else if ($numAttributes == 2){
+                echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td></tr>";
+            }
+            else if ($numAttributes == 3){
+                echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . " </td><td>" . $row[2] . "</td></tr>";
+            }
         }
 
         echo "</table>";
+
     }
 
     function handleSeeMyArtRequest() {
@@ -111,9 +120,24 @@
         //exit();
         //echo "$userEmail";
         $radioSelection = $_GET['select_art_type'];
+        //choose which attributes get selected
+        $year = "";
+        $price = "";
+        $numAttributes = 1;
+        //$selectedAttributes = $_GET['attributeYear'];
+        if (!empty($_GET['attributeYear'])){
+            $year = $_GET['attributeYear'];
+            $numAttributes++;
+        }
+
+        if (!empty($_GET['attributePrice'])){
+            $price = $_GET['attributePrice'];
+            $numAttributes++;
+        }
+
 
         if ($radioSelection == "Paintings"){
-            $fetchMyArt = executePlainSQL("SELECT a.Title FROM ArtOwner ao, Art3 a, Painting p WHERE a.OwnerID = ao.OwnerID AND a.IdentificationNumber = p.IdentificationNumber AND Email='" . $userEmail . "'");
+            $fetchMyArt = executePlainSQL("SELECT a.Title " . $year . " " . $price . " FROM ArtOwner ao, Art3 a, Painting p WHERE a.OwnerID = ao.OwnerID AND a.IdentificationNumber = p.IdentificationNumber AND Email='" . $userEmail . "'");
         } else if ($radioSelection == "Sculptures"){
             $fetchMyArt = executePlainSQL("SELECT a.Title FROM ArtOwner ao, Art3 a, Sculpture s WHERE a.OwnerID = ao.OwnerID AND a.IdentificationNumber = s.IdentificationNumber AND Email='" . $userEmail . "'");
         } else {
@@ -121,7 +145,7 @@
         }
         echo "<br>List of art I own: <br>";
         echo "$radioSelection";
-        printMyArt($fetchMyArt);
+        printMyArt($fetchMyArt, $numAttributes);
     }
 
     function printMyFees($result) { //prints results from a select statement
