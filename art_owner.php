@@ -69,7 +69,7 @@
             }
 
             function printArtOwnerResult($result) { //prints results from a select statement
-                echo "<br>List of registered Art Owners<br>";
+                echo "<br>List of registered Art Owners</br>";
                 echo "<table>";
                 // echo "<tr><th>fn</th><th>ln</th></tr>";
 
@@ -88,37 +88,39 @@
             }
 
     function printVIPOwners($result) {
+        echo "<br>List of art owners who own more than 2 artworks</br>";
         echo "<table>";
-        echo "<tr><th>ID</th><th>Name</th></tr>";
+        echo "<tr><th>ID</th><th>fn</th><th>ln</th><th>email</th></tr>";
 
         while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-            echo "<tr><td>" . $row["Owner ID"] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" . $row[3] . "</td></tr>"; //or just use "echo $row[0]"
+            // echo "<tr><td>" . $row["Owner ID"] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" . $row[3] . "</td></tr>"; //or just use "echo $row[0]"
+            echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" . $row[3] . "</td></tr>";
         }
 
         echo "</table>";
     }
 
-            function printResult($result) { //prints results from a select statement
-                echo "<br>Retrieved data from table demoTable:<br>";
-                echo "<table>";
-                echo "<tr><th>ID</th><th>Name</th></tr>";
+    function printResult($result) { //prints results from a select statement
+        echo "<br>Retrieved data from table demoTable:<br>";
+        echo "<table>";
+        echo "<tr><th>ID</th><th>Name</th></tr>";
 
-                while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-                    echo "<tr><td>" . $row["ID"] . "</td><td>" . $row["NAME"] . "</td></tr>"; //or just use "echo $row[0]"
-                }
+        while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+            echo "<tr><td>" . $row["ID"] . "</td><td>" . $row["NAME"] . "</td></tr>"; //or just use "echo $row[0]"
+        }
 
-                echo "</table>";
-            }
+        echo "</table>";
+    }
 
-            function handleDisplayRequest() {
-                global $db_conn;
+    function handleDisplayRequest() {
+        global $db_conn;
 
-                $result = executePlainSQL("SELECT id, name FROM demoTable");
+        $result = executePlainSQL("SELECT id, name FROM demoTable");
 
-                // if (($row = oci_fetch_row($result)) != false) {
-                    printResult($result);
-                // }
-            }
+        // if (($row = oci_fetch_row($result)) != false) {
+            printResult($result);
+        // }
+    }
 
 
     function handleArtOwnerDisplayRequest(){
@@ -134,11 +136,11 @@
     function handleVIPDisplayRequest(){
         global $db_conn;
 
-        $res = executePlainSQL("SELECT DISTINCT ao.OwnerID, FirstName, LastName, Email 
-                                FROM ArtOwner ao, Art3 a 
+        $res = executePlainSQL("SELECT DISTINCT ao.OwnerID, FirstName, LastName, Email
+                                FROM ArtOwner ao, Art3 a
                                 WHERE ao.OwnerID=a.OwnerID
                                 GROUP BY ao.OwnerID, FirstName, LastName, Email
-                                Having count(*) > 1");    // not sure if this is the way to count owners who own > 1 artwork?
+                                Having count(*)>2");    // not sure if this is the way to count owners who own > 1 artwork?
         OCICommit($db_conn);
 
         printVIPOwners($res);
@@ -282,13 +284,11 @@
         disconnectFromDB();
     }
 
-            if (isset($_POST['reset']) || isset($_POST['insertSubmit'])|| isset($_POST['insertNewValue'])|| isset($_POST['deleteOwner'])) {
+    if (isset($_POST['reset']) || isset($_POST['insertSubmit'])|| isset($_POST['insertNewValue'])|| isset($_POST['deleteOwner'])) {
 
-                handlePOSTRequest();
-            } else if (isset($_GET['display']) ) {
-                //echo"1";
-                handleGETRequest();
-            }
-
-
-            ?>
+        handlePOSTRequest();
+    } else if (isset($_GET['display']) || isset($_GET['vipdisplay']) ) {
+        //echo"1";
+        handleGETRequest();
+    }
+    ?>
