@@ -19,6 +19,13 @@
                 <p><input type="submit" value="Display" name="display"></p>
             </form>
 
+            <h2>Display VIP Art Owners (at least 2 art pieces displayed in our gallery)</h2>
+            <form method="GET" action="index.php">
+                <!-- if you want another page to load after the button is clicked, you have to specify that page in the action parameter -->
+                <input type="hidden" id="displayVIPTablesRequest" name="displayVIPTablesRequest">
+                <p><input type="submit" value="VIPDisplay" name="vipdisplay"></p>
+            </form>
+
             <h2>Art Owner Signup</h2>
             <form method="POST" action="index.php"> <!--refresh page when submitted-->
                 <input type="hidden" id="insertQueryRequest" name="insertQueryRequest">

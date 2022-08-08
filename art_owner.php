@@ -87,6 +87,17 @@
                 echo "</table>";
             }
 
+    function printVIPOwners($result) {
+        echo "<table>";
+        echo "<tr><th>ID</th><th>Name</th></tr>";
+
+        while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+            echo "<tr><td>" . $row["Owner ID"] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" . $row[3] . "</td></tr>"; //or just use "echo $row[0]"
+        }
+
+        echo "</table>";
+    }
+
             function printResult($result) { //prints results from a select statement
                 echo "<br>Retrieved data from table demoTable:<br>";
                 echo "<table>";
@@ -110,32 +121,31 @@
             }
 
 
-            function handleArtOwnerDisplayRequest(){
-                //$db = new \Oracle\Db("initialize", "Mine");
-                global $db_conn;
-                //$sql = "SELECT FirstName, LastName FROM ArtOwner ORDER BY OwnerID";
+    function handleArtOwnerDisplayRequest(){
+        global $db_conn;
 
-                // runs a sql query that returns values. the returned info is stored in res
-                //$res = $db->execFetchAll($sql, "Query Example");
-                //$res = executePlainSQL($sql);
-                $res = executePlainSQL("SELECT FirstName, LastName, Email FROM ArtOwner");
-                OCICommit($db_conn);
-                // echo "<pre>"; var_dump($res); echo "</pre>\n";
-                // create table
-                //printResult(executePlainSQL("SELECT * FROM ArtOwner"));
-                printArtOwnerResult($res);
-                // echo "<table border='1'>\n";
-                // echo "</th><th>". "Art Owners" . "</th></tr>";
-                // echo "<tr><th>first name</th><th>last name</th></tr>\n";
-                // // adds each row of information in res to the table
-                // foreach ($res as $row) {
-                //     $f = htmlspecialchars($row['FIRSTNAME'], ENT_NOQUOTES, 'UTF-8');
-                //     $l   = htmlspecialchars($row['LASTNAME'], ENT_NOQUOTES, 'UTF-8');
-                //     echo "<tr><td>$f</td><td>$l</td></tr>\n";
-                // }
-                // echo "</table>";
-                OCICommit($db_conn);
-            }
+        $res = executePlainSQL("SELECT FirstName, LastName, Email FROM ArtOwner");
+        OCICommit($db_conn);
+
+        printArtOwnerResult($res);
+        OCICommit($db_conn);
+    }
+
+    function handleVIPDisplayRequest(){
+        global $db_conn;
+
+        $res = executePlainSQL("SELECT DISTINCT ao.OwnerID, FirstName, LastName, Email 
+                                FROM ArtOwner ao, Art3 a 
+                                WHERE ao.OwnerID=a.OwnerID
+                                GROUP BY ao.OwnerID, FirstName, LastName, Email
+                                Having count(*) > 1");    // not sure if this is the way to count owners who own > 1 artwork?
+        OCICommit($db_conn);
+
+        printVIPOwners($res);
+        OCICommit($db_conn);
+    }
+
+
             function executeBoundSQL($cmdstr, $list) {
                 /* Sometimes the same statement will be executed several times with different values for the variables involved in the query.
             In this case you don't need to create the statement several times. Bound variables cause a statement to only be
@@ -258,19 +268,19 @@
 
             }
 
-            function handleGETRequest() {
-                if (connectToDB()) {
-                    if (array_key_exists('displayTablesRequest', $_GET)) {
-                        //echo"2";
-                        handleArtOwnerDisplayRequest();
-                    } else if (array_key_exists('displayTuples', $_GET)) {
-                        handleDisplayRequest();
-                    }
-
-
-                }
-                disconnectFromDB();
+    function handleGETRequest() {
+        if (connectToDB()) {
+            if (array_key_exists('displayTablesRequest', $_GET)) {
+                //echo"2";
+                handleArtOwnerDisplayRequest();
+            } else if (array_key_exists('displayTuples', $_GET)) {
+                handleDisplayRequest();
+            } else if (array_key_exists('displayVIPTablesRequest', $_GET)) {
+                handleVIPDisplayRequest();
             }
+        }
+        disconnectFromDB();
+    }
 
             if (isset($_POST['reset']) || isset($_POST['insertSubmit'])|| isset($_POST['insertNewValue'])|| isset($_POST['deleteOwner'])) {
 
