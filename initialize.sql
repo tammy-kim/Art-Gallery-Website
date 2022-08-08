@@ -136,6 +136,7 @@ insert into Room values(402, 4, 'Spotlight: John Doe', TO_DATE('8/2/2022', 'MM/D
 
 insert into Art1 values(1150, 'Gothic');
 insert into Art1 values(1160, 'Gothic');
+insert into Art1 values(1170, 'Gothic');
 insert into Art1 values(1459, 'Renaissance');
 insert into Art1 values(1470, 'Renaissance');
 insert into Art1 values(1744, 'Rococo');
@@ -152,6 +153,7 @@ insert into Art2 values(5, 'Renaissance');
 
 insert into Art3 values(10001, 'Trees', 1150, 7000.00, 2, 1, 301, 5.00);
 insert into Art3 values(10002, 'Sunflowers', 1160, 8000.99, 2, 1, 301, 5.00);
+insert into Art3 values(10009, 'Last Piece', 1170, 4000.00, 2, 1, 101, 4.00);
 insert into Art3 values(10003, 'wonderful farm', 1980, 100000.00, 1, 2, 401, 10.00);
 insert into Art3 values(10007, 'Malicious Honesty', 1981, 200000.00, 1, 2, 402, 3.00);
 insert into Art3 values(20041, 'Clock', 1860, 345000.00, 3, 3, 301, 5.00);
@@ -164,6 +166,7 @@ insert into Art3 values(35555, 'Lesson', 1470, 150000.00, 5, 5, 101, 2.00);
 insert into Painting values(10001);
 insert into Painting values(10002);
 insert into Painting values(10007);
+insert into Painting values(10009);
 insert into Painting values(20135);
 insert into Painting values(30019);
 
