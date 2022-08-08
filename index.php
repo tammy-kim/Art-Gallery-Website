@@ -1,10 +1,10 @@
 <html>
-    
+
     <head>
         <title>Art Owner Page</title>
         <link rel="stylesheet" href="style.css">
     </head>
-    
+
         <body>
             <div class="vertical-menu">
                 <a href="index.php" class="active">Account Management</a>
@@ -60,7 +60,7 @@
             </form>
             <?php
                 require_once('art_owner.php');
-        
+
 		    ?>
-</body>
+	</body>
 </html>
