@@ -71,11 +71,6 @@
             function printArtOwnerResult($result) { //prints results from a select statement
                 echo "<br>List of registered Art Owners</br>";
                 echo "<table>";
-                // echo "<tr><th>fn</th><th>ln</th></tr>";
-
-                // while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-                //     echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td></tr>"; //or just use "echo $row[0]"
-                // }
 
                 // I added email attribute because i think it's helpful info? Also makes it easier to debug stuff
                 echo "<tr><th>fn</th><th>ln</th><th>email</th></tr>";
@@ -93,14 +88,25 @@
         echo "<tr><th>ID</th><th>fn</th><th>ln</th><th>email</th></tr>";
 
         while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-            // echo "<tr><td>" . $row["Owner ID"] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" . $row[3] . "</td></tr>"; //or just use "echo $row[0]"
             echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" . $row[3] . "</td></tr>";
         }
 
         echo "</table>";
     }
 
-    function printResult($result) { //prints results from a select statement
+    function printVIPArtists($result) {
+        echo "<br>List of artists with expensive artworks on average</br>";
+        echo "<table>";
+        echo "<tr><th>Artist ID</th><th>Price</th></tr>";
+
+        while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+            echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td></tr>";
+        }
+
+        echo "</table>";
+    }
+
+    function printResult($result) { //prints results from a select statement    (tutorial example code)
         echo "<br>Retrieved data from table demoTable:<br>";
         echo "<table>";
         echo "<tr><th>ID</th><th>Name</th></tr>";
@@ -144,6 +150,19 @@
         OCICommit($db_conn);
 
         printVIPOwners($res);
+        OCICommit($db_conn);
+    }
+
+    function handleVIPArtistDisplayRequest() {
+        global $db_conn;
+        $res = executePlainSQL("SELECT a.artistid
+                                From artist a, art3 a3
+                                Where a3.artistid=a.artistid
+                                Group by a.artistid, price
+                                Having avg(a3.price) > any (select avg(price) from art3);");
+        OCICommit($db_conn);
+
+        printVIPArtists($res);
         OCICommit($db_conn);
     }
 
@@ -221,10 +240,6 @@
                     ":bind2" => $_POST['insLN'],
                     ":bind3" => $_POST['insemail']
                 );
-                // // $ownerID = 5;
-                // // $fn = $_POST['insFN'];
-                // // $ln = $_POST['insLN'];
-                // // $em = $_POST['insemail'];
 
                 // $ownerid = "$row[0]" + 1;
                 $ownerid = $rowcount + 1;
@@ -232,8 +247,6 @@
                 $alltuples = array (
                     $tuple
                 );
-                //$sql = "INSERT INTO ArtOwner values ($ownerid, '" . $fn . "', '" . $ln . "', '" . $em . "')";
-                // //$sql = "INSERT INTO ArtOwner values (5, 'abcf', 'deff', 'asdfasdff')";
 
                 executeBoundSQL("insert into ArtOwner values ($ownerid, :bind1, :bind2, :bind3)", $alltuples);
                 OCICommit($db_conn);
@@ -279,6 +292,8 @@
                 handleDisplayRequest();
             } else if (array_key_exists('displayVIPTablesRequest', $_GET)) {
                 handleVIPDisplayRequest();
+            } else if (array_key_exists('displayVIPArtistsRequest', $_GET)) {
+                handleVIPArtistDisplayRequest();
             }
         }
         disconnectFromDB();
