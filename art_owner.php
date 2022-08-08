@@ -106,6 +106,18 @@
         echo "</table>";
     }
 
+    function printFloors($result) {
+        echo "<br>Floors that have hosted all exhibitions</br>";
+        echo "<table>";
+        echo "<tr><th>Floor number</th></tr>";
+
+        while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+            echo "<tr><td>" . $row[0] . "</td></tr>";
+        }
+
+        echo "</table>";
+    }
+
     function printResult($result) { //prints results from a select statement    (tutorial example code)
         echo "<br>Retrieved data from table demoTable:<br>";
         echo "<table>";
@@ -163,6 +175,22 @@
         OCICommit($db_conn);
 
         printVIPArtists($res);
+        OCICommit($db_conn);
+    }
+
+    function handleFloorDisplayRequest() {
+        global $db_conn;
+        $res = executePlainSQL("SELECT ExhibitionName
+                                FROM Room r1
+                                WHERE NOT EXISTS
+                                ((SELECT ExhibitionName from Exhibition)
+                                EXCEPT
+                                (SELECT r2.ExhibitionName from Room r2
+                                WHERE r2.FloorNumber=r1.FloorNumber))");
+        // This SQL query is not working rn but the rest about floor display is working
+        OCICommit($db_conn);
+
+        printFloors($res);
         OCICommit($db_conn);
     }
 
@@ -294,6 +322,8 @@
                 handleVIPDisplayRequest();
             } else if (array_key_exists('displayVIPArtistsRequest', $_GET)) {
                 handleVIPArtistDisplayRequest();
+            } else if (array_key_exists('displayFloorsRequest', $_GET)) {
+                handleFloorDisplayRequest();
             }
         }
         disconnectFromDB();
@@ -302,7 +332,7 @@
     if (isset($_POST['reset']) || isset($_POST['insertSubmit'])|| isset($_POST['insertNewValue'])|| isset($_POST['deleteOwner'])) {
 
         handlePOSTRequest();
-    } else if (isset($_GET['display']) || isset($_GET['vipdisplay']) || isset($_GET['vipartistdisplay'])) {
+    } else if (isset($_GET['display']) || isset($_GET['vipdisplay']) || isset($_GET['vipartistdisplay']) || isset($_GET['floordisplay'])) {
         //echo"1";
         handleGETRequest();
     }
