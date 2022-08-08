@@ -129,7 +129,11 @@ insert into Exhibition values('Canadian Women Artists in Modern Moment', TO_DATE
 insert into Exhibition values('Spotlight: John Doe', TO_DATE('8/2/2022', 'MM/DD/YYYY'), TO_DATE('12/1/2022', 'MM/DD/YYYY'));
 
 insert into Room values(101, 1, 'Kids Take Over', TO_DATE('4/1/2022', 'MM/DD/YYYY'));
+insert into Room values(203, 2, 'Kids Take Over', TO_DATE('4/1/2022', 'MM/DD/YYYY'));
+insert into Room values(303, 3, 'Kids Take Over', TO_DATE('4/1/2022', 'MM/DD/YYYY'));
+insert into Room values(404, 4, 'Kids Take Over', TO_DATE('4/1/2022', 'MM/DD/YYYY'));
 insert into Room values(201, 2, 'In Memory of Andrew Green', TO_DATE('5/20/2022', 'MM/DD/YYYY'));
+insert into Room values(405, 4, 'In Memory of Andrew Green', TO_DATE('5/20/2022', 'MM/DD/YYYY'));
 insert into Room values(301, 3, 'Art Connects', TO_DATE('5/20/2022', 'MM/DD/YYYY'));
 insert into Room values(401, 4, 'Spotlight: John Doe', TO_DATE('8/2/2022', 'MM/DD/YYYY'));
 insert into Room values(402, 4, 'Spotlight: John Doe', TO_DATE('8/2/2022', 'MM/DD/YYYY'));
