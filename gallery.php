@@ -84,7 +84,7 @@
             printVIPOwners($res);
             OCICommit($db_conn);
         }
-        
+
 
         function printDisplayArtbyArtistRequest() {
             echo "<br>Art in the Gallery, grouped by artist name<br>";
@@ -92,7 +92,7 @@
             echo "<tr><th>Title</th><th>Artist</th><th>Year</th><th>Price</th></tr>";
 
             while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-                echo "<tr><td>" . $row["ID"] . "</td><td>" . $row["NAME"] . "</td></tr>"; //or just use "echo $row[0]"
+                echo "<tr><td>" . $row["Title"] . "</td><td>" . $row["Artist First Name"] . "</td><td>" . $row["Artist Last Name"] . "</td><td>" . $row["Price"] . "</td></tr>"; //or just use "echo $row[0]"
             }
 
             echo "</table>";
