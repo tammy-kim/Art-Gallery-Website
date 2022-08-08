@@ -146,7 +146,7 @@
                                 FROM ArtOwner ao, Art3 a
                                 WHERE ao.OwnerID=a.OwnerID
                                 GROUP BY ao.OwnerID, FirstName, LastName, Email
-                                Having count(*)>2");    // not sure if this is the way to count owners who own > 1 artwork?
+                                Having count(*)>2");
         OCICommit($db_conn);
 
         printVIPOwners($res);
@@ -155,11 +155,11 @@
 
     function handleVIPArtistDisplayRequest() {
         global $db_conn;
-        $res = executePlainSQL("SELECT a.artistid
-                                From artist a, art3 a3
-                                Where a3.artistid=a.artistid
-                                Group by a.artistid, price
-                                Having avg(a3.price) > any (select avg(price) from art3);");
+        $res = executePlainSQL("SELECT a.artistid, a3.price
+                                FROM artist a, art3 a3
+                                WHERE a3.artistid=a.artistid
+                                GROUP BY a.artistid, price
+                                HAVING avg(a3.price) > all (select avg(price) from art3)");
         OCICommit($db_conn);
 
         printVIPArtists($res);
@@ -302,7 +302,7 @@
     if (isset($_POST['reset']) || isset($_POST['insertSubmit'])|| isset($_POST['insertNewValue'])|| isset($_POST['deleteOwner'])) {
 
         handlePOSTRequest();
-    } else if (isset($_GET['display']) || isset($_GET['vipdisplay']) ) {
+    } else if (isset($_GET['display']) || isset($_GET['vipdisplay']) || isset($_GET['vipartistdisplay'])) {
         //echo"1";
         handleGETRequest();
     }
