@@ -34,6 +34,13 @@
                 <p><input type="submit" value="VIPArtistDisplay" name="vipartistdisplay"></p>
             </form>
 
+            <h2>Display Floor Numbers that have hosted all exhibitions</h2>
+            <form method="GET" action="index.php">
+                <!-- if you want another page to load after the button is clicked, you have to specify that page in the action parameter -->
+                <input type="hidden" id="displayFloorsRequest" name="displayFloorsRequest">
+                <p><input type="submit" value="FloorDisplay" name="floordisplay"></p>
+            </form>
+
             <h2>Art Owner Signup</h2>
             <form method="POST" action="index.php"> <!--refresh page when submitted-->
                 <input type="hidden" id="insertQueryRequest" name="insertQueryRequest">
