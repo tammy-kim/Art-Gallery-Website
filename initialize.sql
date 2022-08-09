@@ -168,6 +168,7 @@ insert into Art3 values(26951, 'The Starry Night', 1744, 5000.00, 4, 4, 301, 5.0
 insert into Art3 values(30019, 'Mona Lisa', 1744, 7000000.00, 4, 4, 301, 5.00);
 insert into Art3 values(32107, 'Display of Patience', 1459, 100000.00, 5, 5, 101, 2.00);
 insert into Art3 values(35555, 'Lesson', 1470, 150000.00, 5, 5, 101, 2.00);
+insert into Art3 values(35556, 'Mona Lisa', 1470, 80000.00, 5, 4, 101, 3.00);
 
 insert into Painting values(10001);
 insert into Painting values(10002);
@@ -181,6 +182,7 @@ insert into Sculpture values(20041);
 insert into Sculpture values(26951);
 insert into Sculpture values(32107);
 insert into Sculpture values(35555);
+insert into Sculpture values(35556);
 
 insert into Buyer_Purchase values('Leonor', 'Coffey', 'leoisawesome@gmail.com', 5000.99, 10001);
 insert into Buyer_Purchase values('Estelle', 'Leach', 'estelle.leach@gmail.com', 100000.99, 10007);
