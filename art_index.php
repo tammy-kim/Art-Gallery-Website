@@ -15,7 +15,7 @@
         </div>
 
         <h2 >Login</h2>
-            <form method="GET" action="wrapper.php">
+            <form method="GET" action="art_index.php">
                 <input type="hidden" id="loginRequest" name="loginRequest">
                 Email: <input type="text" name="loginEmail"> <br /><br />
                 <p><input type="submit" value="Login" name="login"></p>
@@ -23,7 +23,7 @@
             <div class="filler"></div>
 
         <h2>View My Artwork in the Gallery</h2>
-            <form method="GET" action="wrapper.php">
+            <form method="GET" action="art_index.php">
                 <input type="hidden" id="seeMyArtRequest" name="seeMyArtRequest">
                 <p>Choose Medium:</p>
                 <input type="radio" id="all" name="select_art_type" value="All">
@@ -60,14 +60,14 @@
             <div class="filler"></div>
 
         <h2>My Exhibition Fees</h2>
-            <form method="GET" action="wrapper.php">
+            <form method="GET" action="art_index.php">
                 <input type="hidden" id="seeMyFeesRequest" name="seeMyFeesRequest">
                 <p><input type="submit" value="Sum Fees" name="sum_fees"></p>
             </form>
         <div class="filler"></div>
 
         <h2>Logout</h2>
-            <form method="GET" action="wrapper.php">
+            <form method="GET" action="art_index.php">
                 <input type="hidden" id="logoutRequest" name="logoutRequest">
                 <p><input type="submit" value="Logout" name="logout"></p>
             </form>
