@@ -5,7 +5,7 @@
      * Modified by Simona Radu
      * Modified by Jessica Wong (2018-06-22)
      */
-    
+
 
     $success = True; //keep track of errors so it redirects the page only if there are no errors
     $db_conn = NULL; // edit the login credentials in connectToDB()
@@ -19,7 +19,7 @@
             echo "<script type='text/javascript'>alert('" . $message . "');</script>";
         }
     }
-    
+
     function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
         //echo "<br>running ".$cmdstr."<br>";
         global $db_conn, $success;
@@ -44,8 +44,8 @@
 
         return $statement;
     }
-    
-    
+
+
     function connectToDB() {
         global $db_conn;
 
@@ -77,21 +77,21 @@
         global $db_conn;
         $loginEmail = $_GET['loginEmail'];  // gets the entered email
         //echo $loginEmail;
-        
-        session_save_path("/home/m/minesher/public_html/project_q2z1b_r0x2b_y5v1r");
+
+        session_save_path("/home/t/tammykim/public_html");
         //echo session_save_path();
         session_start(); # start session handling.
         $_SESSION['current_user']=$loginEmail;
         //exit();
-        
+
         $fetchName = executePlainSQL("SELECT FirstName FROM ArtOwner WHERE Email='$loginEmail'");  // get FirstName column from ArtOwner with loginEmail... should only be one row since email is unique.
         $userName = OCI_Fetch_Array($fetchName);
-        echo "welcome to the gallery ";
-        echo "$userName[0]"; 
+        echo "Welcome to the gallery ";
+        echo "$userName[0]";
     }
 
     function printMyArt($result, $numAttributes) { //prints results from a select statement
-        
+
         echo "<table>";
         if ($numAttributes == 1){
             echo "<tr><th>title</th></tr>";
@@ -101,9 +101,9 @@
             } else {
                 $columnName = "price";
             }
-            echo "<tr><th>title</th><th>" . $columnName . "</th></tr>";
+            echo "<tr><th>Title</th><th>" . $columnName . "</th></tr>";
         }  else if ($numAttributes == 3){
-            echo "<tr><th>title</th><th>year</th><th>price</th></tr>";
+            echo "<tr><th>Title</th><th>Year</th><th>Price</th></tr>";
         }
 
         while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
@@ -126,7 +126,7 @@
         //echo"in function";
         global $db_conn;
         $userEmail = NULL;
-        session_save_path("/home/m/minesher/public_html/project_q2z1b_r0x2b_y5v1r");
+        session_save_path("/home/t/tammykim/public_html");
         session_start(); # start session handling again.
         //echo $_SESSION['current_user'];
         $userEmail = $_SESSION['current_user'];
@@ -151,12 +151,6 @@
         $whereAttribute = "a." . $_GET['where_attribute'];
 
         $whereCondition = $whereCondition . $whereAttribute . $_GET['where_operation'] . $_GET['where_value'];
-
-        //echo"$whereCondition";
-        
-        
-
-
         if ($radioSelection == "Paintings"){
             $fetchMyArt = executePlainSQL("SELECT a.Title " . $year . " " . $price . " FROM ArtOwner ao, Art3 a, Painting p WHERE a.OwnerID = ao.OwnerID AND a.IdentificationNumber = p.IdentificationNumber AND Email='" . $userEmail . "'" . $whereCondition);
         } else if ($radioSelection == "Sculptures"){
@@ -165,7 +159,7 @@
             $fetchMyArt = executePlainSQL("SELECT a.Title " . $year . " " . $price . " FROM ArtOwner ao, Art3 a WHERE a.OwnerID = ao.OwnerID AND ao.Email='" . $userEmail . "'" . $whereCondition);
         }
         echo "<br>List of art I own: <br>";
-        echo "$radioSelection";
+        // echo "$radioSelection";
         printMyArt($fetchMyArt, $numAttributes);
     }
 
@@ -184,7 +178,7 @@
     function handleSeeMyFeesRequest() {
         global $db_conn;
         $userEmail = NULL;
-        session_save_path("/home/m/minesher/public_html/project_q2z1b_r0x2b_y5v1r");
+        session_save_path("/home/t/tammykim/public_html");
         session_start(); # start session handling again.
         //echo $_SESSION['current_user'];
         $userEmail = $_SESSION['current_user'];
@@ -194,26 +188,26 @@
         executePlainSQL("drop view myArt");
 
         // create a view where art is labeled with it's medium type. Only contains art owned by logged in owner.
-        executePlainSQL("CREATE VIEW myArt(artID, Medium) AS 
+        executePlainSQL("CREATE VIEW myArt(artID, Medium) AS
 
-                                        
+
                                         SELECT a.IdentificationNumber, 'Sculpture' as Medium
                                         FROM ArtOwner ao, Art3 a, Sculpture s
                                         WHERE a.OwnerID = ao.OwnerID AND a.IdentificationNumber = s.IdentificationNumber AND ao.Email='" . $userEmail . "'
-                                        
-                                        UNION 
+
+                                        UNION
                                         SELECT a.IdentificationNumber, 'Painting' as Medium
                                         FROM ArtOwner ao, Art3 a, Painting p
-                                        WHERE a.OwnerID = ao.OwnerID AND a.IdentificationNumber = p.IdentificationNumber AND ao.Email='" . $userEmail . "' 
-                                        UNION 
-                                        
+                                        WHERE a.OwnerID = ao.OwnerID AND a.IdentificationNumber = p.IdentificationNumber AND ao.Email='" . $userEmail . "'
+                                        UNION
+
                                         SELECT a.IdentificationNumber, 'N/A' as Medium
                                         FROM ArtOwner ao, Art3 a
                                         WHERE a.OwnerID = ao.OwnerID AND ao.Email='" . $userEmail . "'
                                         AND a.IdentificationNumber NOT IN (SELECT s.IdentificationNumber FROM Sculpture s UNION SELECT p.IdentificationNumber FROM Painting p)
- 
+
                                         ");
-        
+
         $fetchMyFees = executePlainSQL("SELECT m.Medium, SUM(a.ExhibitionFee)
                                         FROM Art3 a, myArt m
                                         WHERE a.IdentificationNumber = m.ArtID
@@ -223,7 +217,7 @@
     }
 
     function handleLogoutRequest(){
-        session_save_path("/home/m/minesher/public_html/project_q2z1b_r0x2b_y5v1r");
+        session_save_path("/home/t/tammykim/public_html");
 
         session_start(); # start session handling.
         //echo $_SESSION['current_user'];
@@ -240,7 +234,7 @@
         }
 
         disconnectFromDB();
-    
+
     }
 
     function handleGETRequest() {
@@ -257,18 +251,16 @@
             } else if (array_key_exists('seeMyFeesRequest', $_GET)) {
                 //echo"2";
                 handleSeeMyFeesRequest();
-            }  
+            }
         }
         disconnectFromDB();
     }
 
     if (isset($_POST['reset']) ) {
-        
+
         handlePOSTRequest();
     } else if (isset($_GET['login']) || isset($_GET['view']) || isset($_GET['logout']) || isset($_GET['sum_fees'])) {
         //echo"get";
         handleGETRequest();
     }
-    
-
     ?>
