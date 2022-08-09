@@ -180,7 +180,7 @@
 
     function handleFloorDisplayRequest() {
         global $db_conn;
-        $res = executePlainSQL("SELECT ExhibitionName
+        $res = executePlainSQL("SELECT DISTINCT FloorNumber
                                 FROM Room r1
                                 WHERE NOT EXISTS
                                 ((SELECT ExhibitionName from Exhibition)
