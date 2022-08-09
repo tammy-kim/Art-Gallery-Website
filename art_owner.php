@@ -74,7 +74,7 @@
                 echo "<table>";
 
                 // I added email attribute because i think it's helpful info? Also makes it easier to debug stuff
-                echo "<tr><th>fn</th><th>ln</th><th>email</th></tr>";
+                echo "<tr><th>First Name</th><th>Last Name</th><th>Email</th></tr>";
 
                 while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
                     echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td></tr>"; //or just use "echo $row[0]"
@@ -86,7 +86,7 @@
     function printVIPOwners($result) {
         echo "<br>List of art owners who own more than 2 artworks</br>";
         echo "<table>";
-        echo "<tr><th>ID</th><th>fn</th><th>ln</th><th>email</th></tr>";
+        echo "<tr><th>ID</th><th>Fist Name</th><th>Last Name</th><th>Email</th></tr>";
 
         while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
             echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" . $row[3] . "</td></tr>";
@@ -359,7 +359,7 @@
 
     if (isset($_POST['reset']) || isset($_POST['insertSubmit'])|| isset($_POST['insertNewValue'])|| isset($_POST['deleteOwner']) || isset($_POST['artistdisplay'])) {
         handlePOSTRequest();
-     } else if (isset($_GET['display']) || isset($_GET['vipdisplay']) || isset($_GET['vipartistdisplay']) || isset($_GET['floordisplay'])) {
+    } else if (isset($_GET['display']) || isset($_GET['vipdisplay']) || isset($_GET['vipartistdisplay']) || isset($_GET['floordisplay'])) {
         //echo"1";
         handleGETRequest();
     }
