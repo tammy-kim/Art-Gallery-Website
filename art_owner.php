@@ -9,6 +9,7 @@
             $success = True; //keep track of errors so it redirects the page only if there are no errors
             $db_conn = NULL; // edit the login credentials in connectToDB()
             $show_debug_alert_messages = False; // set to True if you want alerts to show you which methods are being triggered (see how it is used in debugAlertMessage())
+            $artist_list = NULL;
 
             function debugAlertMessage($message) {
                 global $show_debug_alert_messages;
@@ -118,6 +119,19 @@
         echo "</table>";
     }
 
+    function printArtists($result) {
+        if ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+            echo "<br>List of artists whose artwork(s) fall under this name as titles:";
+            echo "<table>";
+            echo "<tr><th>First Name</th><th>Last Name</th></tr>";
+            do {
+                echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td></tr>";
+            } while ($row = OCI_Fetch_Array($result, OCI_BOTH));
+        } else {
+            echo "<br>Sorry, there are no artists who have artwork(s) with this title...</br>";
+        }
+    }
+
     function printResult($result) { //prints results from a select statement    (tutorial example code)
         echo "<br>Retrieved data from table demoTable:<br>";
         echo "<table>";
@@ -191,6 +205,18 @@
         OCICommit($db_conn);
 
         printFloors($res);
+        OCICommit($db_conn);
+    }
+
+    function handleArtistDisplayRequest() {
+        global $db_conn;
+        $artName = $_POST['artName'];  // gets the entered artwork title
+
+        $res = executePlainSQL("SELECT DISTINCT FirstName, LastName
+            FROM Artist a, Art3 a3
+            WHERE a.ArtistID=a3.ArtistID AND a3.Title='$artName'");
+        OCICommit($db_conn);
+        printArtists($res);
         OCICommit($db_conn);
     }
 
@@ -303,6 +329,8 @@
                         handleOwnerUpdateRequest();
                     } else if (array_key_exists('deleteOwnerRequest', $_POST)) {
                         handleOwnerDeleteRequest();
+                    } else if (array_key_exists('displayArtistRequest', $_POST)) {
+                        handleArtistDisplayRequest();
                     }
                 }
 
@@ -329,10 +357,9 @@
         disconnectFromDB();
     }
 
-    if (isset($_POST['reset']) || isset($_POST['insertSubmit'])|| isset($_POST['insertNewValue'])|| isset($_POST['deleteOwner'])) {
-
+    if (isset($_POST['reset']) || isset($_POST['insertSubmit'])|| isset($_POST['insertNewValue'])|| isset($_POST['deleteOwner']) || isset($_POST['artistdisplay'])) {
         handlePOSTRequest();
-    } else if (isset($_GET['display']) || isset($_GET['vipdisplay']) || isset($_GET['vipartistdisplay']) || isset($_GET['floordisplay'])) {
+     } else if (isset($_GET['display']) || isset($_GET['vipdisplay']) || isset($_GET['vipartistdisplay']) || isset($_GET['floordisplay'])) {
         //echo"1";
         handleGETRequest();
     }
