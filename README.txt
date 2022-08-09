@@ -7,16 +7,16 @@ DELETE operation:
   deletes an art owner from ArtOwner
 
 UPDATE operation:
-  updates one of first name, last name, or email of an art owner from ArtOwner
+  updates one of first name, last name, and email of an art owner from ArtOwner
 
 SELECTION operation:
-  allows ArtOwner user to select their choice of medium and attributes of artworks with a specific price or year range
+  allows the ArtOwner user to select their choice of medium and attributes of artworks with a specific range of price or year
   
 PROJECTION operation:
   displays first name, last name, and email of all existing art owners
 
 JOIN operation:
-  allows user to input an artwork name to search for a list of artists whose art pieces have that same name
+  allows user to input an artwork name in order to search for a list of artists whose art pieces have that same name
 
 AGGREAGTION WITH GROUP BY operation:
   displays total exhibition fees grouped by medium for the ArtOwner user (helpful for them to see how much revenue their artworks generate)
