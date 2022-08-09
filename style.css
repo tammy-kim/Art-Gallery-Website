@@ -1,28 +1,85 @@
-/* style.css 
+/* style.css
 Credit to oracle, link below
 https://docs.oracle.com/database/121/TDPPH/ch_four_anyco_app.htm#TDPPH153
 */
- 
-body {
-    background: #FFFFFF;
-    color:      #000000;
-    font-family: Arial, sans-serif;
+
+body,
+html {
+    height: 100%;
+    background: #e1f4fa;
 }
- 
+
+.container {
+    background: #e1f4fa;
+    /* width: 100%;
+    height: 100%; */
+}
+
+.menu {
+    width: 100%;
+    font-family: Helvetica;
+    font-size: 12pt;
+}
+
+.menu a {
+    margin-top: 10px;
+    margin-left: 80px;
+    text-align: left;
+    display: inline-flex;
+    color: #45616a;
+    padding: 12px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+h2 {
+    font-weight: bold;
+    color: rgb(88, 111, 127);
+    font-size: 20px;
+    font-family: Helvetica;
+}
+
+
+.sub-header {
+    padding: 20px;
+    text-align: center;
+    border: #9ecadc;
+    color: #ffffff;
+    background-color: #d2f2ff;
+    border-top-style: solid;
+    border-top-color: #ffffff;
+    border-top-width: 10px;
+    text-shadow: -2px 0 #548da3, 0 3px #548da3, 3px 0 #548da3, 0 -3px #548da3;
+    font-size: 22px;
+    font-family: Courier;
+}
+
+.filler {
+    padding: 1px;
+    color: #ffffff;
+    background-color: #ffffff;
+}
+
 table {
     border-collapse: collapse;
     margin: 5px;
 }
- 
-tr:nth-child(even) {background-color: #FFFFFF}
-tr:nth-child(odd) {background-color: #EDF3FE}
- 
-td, th {
+
+tr:nth-child(even) {
+    background-color: #FFFFFF;
+}
+
+tr:nth-child(odd) {
+    background-color: #EDF3FE;
+}
+
+td,
+th {
     border: solid #000000 1px;
     text-align: left;
     padding: 5px;
 }
- 
+
 #header {
     font-weight: bold;
     font-size: 160%;
@@ -30,20 +87,13 @@ td, th {
     border-bottom: solid #334B66 4px;
     margin-bottom: 10px;
 }
- 
-#menu {
-    position: absolute;
-    left: 5px;
-    width: 180px;
-    display: block;
-    background-color: #dddddd;
-}
+
 #user {
     font-size: 90%;
-    font-style:italic;
+    font-style: italic;
     padding: 3px;
 }
- 
+
 #content {
     margin-left: 200px;
 }
