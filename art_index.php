@@ -9,6 +9,7 @@
         <div class="vertical-menu">
             <a href="index.php" class="active">Account Management</a>
             <a href="art_index.php">Art Owner Portal</a>
+            <a href="explore_gallery.php">Explore the Gallery</a>
         </div>
 
         <h2>Login</h2>
@@ -31,9 +32,26 @@
                 <p>Choose Attributes to Display</p>
                 <input type="checkbox" id="year" name="attributeYear" value=", a.YearCreated">
                 <label for="year"> Year</label><br>
-
                 <input type="checkbox" id="price" name="attributePrice" value=", a.Price">
                 <label for="price"> Price</label><br>
+                <p>Where meets criteria</p>
+
+
+                <select name="where_attribute" id="where_attribute">
+                    <option value="">--- Choose an attribute ---</option>
+                    <option value="YearCreated">Year</option>
+                    <option value="price">Price</option>
+                </select>
+
+                <select name="where_operation" id="where_operation">
+                    <option value="">--- Choose an operation ---</option>
+                    <option value=">">></option>
+                    <option value="<"><</option>
+                    <option value="=">=</option>
+                </select>
+
+                <input type="number" id="where_value" name="where_value">
+
                 <p><input type="submit" value="View" name="view"></p>
             </form>
         

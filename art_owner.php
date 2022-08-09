@@ -184,7 +184,7 @@
                                 FROM Room r1
                                 WHERE NOT EXISTS
                                 ((SELECT ExhibitionName from Exhibition)
-                                EXCEPT
+                                MINUS
                                 (SELECT r2.ExhibitionName from Room r2
                                 WHERE r2.FloorNumber=r1.FloorNumber))");
         // This SQL query is not working rn but the rest about floor display is working

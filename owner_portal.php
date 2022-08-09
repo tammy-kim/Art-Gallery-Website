@@ -78,7 +78,7 @@
         $loginEmail = $_GET['loginEmail'];  // gets the entered email
         //echo $loginEmail;
         
-        session_save_path("/home/y/yak226/public_html/project_q2z1b_r0x2b_y5v1r");
+        session_save_path("/home/m/minesher/public_html/project_q2z1b_r0x2b_y5v1r");
         //echo session_save_path();
         session_start(); # start session handling.
         $_SESSION['current_user']=$loginEmail;
@@ -93,7 +93,18 @@
     function printMyArt($result, $numAttributes) { //prints results from a select statement
         
         echo "<table>";
-        //echo "<tr><th>title</th></tr>";
+        if ($numAttributes == 1){
+            echo "<tr><th>title</th></tr>";
+        } else if ($numAttributes == 2){
+            if (!empty($_GET['attributeYear'])){
+                $columnName = "year";
+            } else {
+                $columnName = "price";
+            }
+            echo "<tr><th>title</th><th>" . $columnName . "</th></tr>";
+        }  else if ($numAttributes == 3){
+            echo "<tr><th>title</th><th>year</th><th>price</th></tr>";
+        }
 
         while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
             if ($numAttributes == 1){
@@ -112,6 +123,7 @@
     }
 
     function handleSeeMyArtRequest() {
+        //echo"in function";
         global $db_conn;
         $userEmail = NULL;
         session_save_path("/home/m/minesher/public_html/project_q2z1b_r0x2b_y5v1r");
@@ -125,7 +137,6 @@
         $year = "";
         $price = "";
         $numAttributes = 1;
-        //$selectedAttributes = $_GET['attributeYear'];
         if (!empty($_GET['attributeYear'])){
             $year = $_GET['attributeYear'];
             $numAttributes++;
@@ -135,14 +146,23 @@
             $price = $_GET['attributePrice'];
             $numAttributes++;
         }
+        //specify WHERE condition
+        $whereCondition = "AND ";
+        $whereAttribute = "a." . $_GET['where_attribute'];
+
+        $whereCondition = $whereCondition . $whereAttribute . $_GET['where_operation'] . $_GET['where_value'];
+
+        //echo"$whereCondition";
+        
+        
 
 
         if ($radioSelection == "Paintings"){
-            $fetchMyArt = executePlainSQL("SELECT a.Title " . $year . " " . $price . " FROM ArtOwner ao, Art3 a, Painting p WHERE a.OwnerID = ao.OwnerID AND a.IdentificationNumber = p.IdentificationNumber AND Email='" . $userEmail . "'");
+            $fetchMyArt = executePlainSQL("SELECT a.Title " . $year . " " . $price . " FROM ArtOwner ao, Art3 a, Painting p WHERE a.OwnerID = ao.OwnerID AND a.IdentificationNumber = p.IdentificationNumber AND Email='" . $userEmail . "'" . $whereCondition);
         } else if ($radioSelection == "Sculptures"){
-            $fetchMyArt = executePlainSQL("SELECT a.Title " . $year . " " . $price . " FROM ArtOwner ao, Art3 a, Sculpture s WHERE a.OwnerID = ao.OwnerID AND a.IdentificationNumber = s.IdentificationNumber AND Email='" . $userEmail . "'");
+            $fetchMyArt = executePlainSQL("SELECT a.Title " . $year . " " . $price . " FROM ArtOwner ao, Art3 a, Sculpture s WHERE a.OwnerID = ao.OwnerID AND a.IdentificationNumber = s.IdentificationNumber AND Email='" . $userEmail . "'" . $whereCondition);
         } else {
-            $fetchMyArt = executePlainSQL("SELECT a.Title " . $year . " " . $price . " FROM ArtOwner ao, Art3 a WHERE a.OwnerID = ao.OwnerID AND ao.Email='" . $userEmail . "'");
+            $fetchMyArt = executePlainSQL("SELECT a.Title " . $year . " " . $price . " FROM ArtOwner ao, Art3 a WHERE a.OwnerID = ao.OwnerID AND ao.Email='" . $userEmail . "'" . $whereCondition);
         }
         echo "<br>List of art I own: <br>";
         echo "$radioSelection";

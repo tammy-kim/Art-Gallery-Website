@@ -6,6 +6,11 @@
     </head>
 
     <body>
+            <div class="vertical-menu">
+                <a href="index.php" class="active">Account Management</a>
+                <a href="art_index.php">Art Owner Portal</a>
+                <a href="explore_gallery.php">Explore the Gallery</a>
+            </div>
         
     <h2>Display Art by Artist</h2>
             <form method="GET" action="explore_gallery.php">
