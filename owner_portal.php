@@ -51,7 +51,7 @@
 
         // Your username is ora_(CWL_ID) and the password is a(student number). For example,
         // ora_platypus is the username and a12345678 is the password.
-        $db_conn = OCILogon("ora_yak226", "a30777149", "dbhost.students.cs.ubc.ca:1522/stu");
+        $db_conn = OCILogon("ora_minesher", "a28495142", "dbhost.students.cs.ubc.ca:1522/stu");
 
         if ($db_conn) {
             debugAlertMessage("Database is Connected");
@@ -78,7 +78,7 @@
         $loginEmail = $_GET['loginEmail'];  // gets the entered email
         //echo $loginEmail;
 
-        session_save_path("/home/t/tammykim/public_html");
+        session_save_path("/home/m/minesher/public_html/project_q2z1b_r0x2b_y5v1r");
         //echo session_save_path();
         session_start(); # start session handling.
         $_SESSION['current_user']=$loginEmail;
@@ -126,7 +126,7 @@
         //echo"in function";
         global $db_conn;
         $userEmail = NULL;
-        session_save_path("/home/t/tammykim/public_html");
+        session_save_path("/home/m/minesher/public_html/project_q2z1b_r0x2b_y5v1r");
         session_start(); # start session handling again.
         //echo $_SESSION['current_user'];
         $userEmail = $_SESSION['current_user'];
@@ -178,7 +178,7 @@
     function handleSeeMyFeesRequest() {
         global $db_conn;
         $userEmail = NULL;
-        session_save_path("/home/t/tammykim/public_html");
+        session_save_path("/home/m/minesher/public_html/project_q2z1b_r0x2b_y5v1r");
         session_start(); # start session handling again.
         //echo $_SESSION['current_user'];
         $userEmail = $_SESSION['current_user'];
@@ -217,7 +217,7 @@
     }
 
     function handleLogoutRequest(){
-        session_save_path("/home/t/tammykim/public_html");
+        session_save_path("/home/m/minesher/public_html/project_q2z1b_r0x2b_y5v1r");
 
         session_start(); # start session handling.
         //echo $_SESSION['current_user'];
