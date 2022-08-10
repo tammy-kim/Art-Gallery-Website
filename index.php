@@ -22,6 +22,13 @@
             </form>
             <div class="filler"></div>
 
+            <h2>Arts in Our Gallery</h2>
+            <form method="GET" action="index.php">
+                <input type="hidden" id="displayArtsRequest" name="displayArtsRequest">
+                <p><input type="submit" value="View" name="artdisplay"></p>
+            </form>
+            <div class="filler"></div>
+
             <h2>VIP Art Owners who own 2 or more artworks in our gallery</h2>
             <form method="GET" action="index.php">
                 <!-- if you want another page to load after the button is clicked, you have to specify that page in the action parameter -->
