@@ -69,19 +69,29 @@
                 OCILogoff($db_conn);
             }
 
-            function printArtOwnerResult($result) { //prints results from a select statement
-                echo "<br>List of registered Art Owners</br>";
-                echo "<table>";
+    function printArtOwnerResult($result) { //prints results from a select statement
+        echo "<br>List of registered Art Owners</br>";
+        echo "<table>";
+        echo "<tr><th>First Name</th><th>Last Name</th><th>Email</th></tr>";
 
-                // I added email attribute because i think it's helpful info? Also makes it easier to debug stuff
-                echo "<tr><th>First Name</th><th>Last Name</th><th>Email</th></tr>";
+        while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+            echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td></tr>"; //or just use "echo $row[0]"
+        }
 
-                while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-                    echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td></tr>"; //or just use "echo $row[0]"
-                }
+        echo "</table>";
+    }
 
-                echo "</table>";
-            }
+    function printArtResult($result) {
+        echo "<br>Here is a list of all art pieces in our gallery.</br>";
+        echo "<table>";
+        echo "<tr><th>ID</th><th>Title</th></tr>";
+
+        while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+            echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td></tr>";
+        }
+
+        echo "</table>";
+    }
 
     function printVIPOwners($result) {
         echo "<br>List of art owners who own more than 2 artworks</br>";
@@ -146,12 +156,8 @@
 
     function handleDisplayRequest() {
         global $db_conn;
-
         $result = executePlainSQL("SELECT id, name FROM demoTable");
-
-        // if (($row = oci_fetch_row($result)) != false) {
-            printResult($result);
-        // }
+        printResult($result);
     }
 
 
@@ -162,6 +168,14 @@
         OCICommit($db_conn);
 
         printArtOwnerResult($res);
+        OCICommit($db_conn);
+    }
+
+    function handleArtDisplayRequest() {
+        global $db_conn;
+        $res = executePlainSQL("SELECT IdentificationNumber, Title FROM Art3");
+        OCICommit($db_conn);
+        printArtResult($res);
         OCICommit($db_conn);
     }
 
@@ -352,6 +366,8 @@
                 handleVIPArtistDisplayRequest();
             } else if (array_key_exists('displayFloorsRequest', $_GET)) {
                 handleFloorDisplayRequest();
+            } else if (array_key_exists('displayArtsRequest', $_GET)) {
+                handleArtDisplayRequest();
             }
         }
         disconnectFromDB();
@@ -359,7 +375,7 @@
 
     if (isset($_POST['reset']) || isset($_POST['insertSubmit'])|| isset($_POST['insertNewValue'])|| isset($_POST['deleteOwner']) || isset($_POST['artistdisplay'])) {
         handlePOSTRequest();
-    } else if (isset($_GET['display']) || isset($_GET['vipdisplay']) || isset($_GET['vipartistdisplay']) || isset($_GET['floordisplay'])) {
+    } else if (isset($_GET['display']) || isset($_GET['vipdisplay']) || isset($_GET['vipartistdisplay']) || isset($_GET['floordisplay']) || isset($_GET['artdisplay'])) {
         //echo"1";
         handleGETRequest();
     }
